@@ -37,9 +37,11 @@ function auiTasks(options) {
 }
 
 function normalizeOptions(options) {
+	var codeGlobs = ['src/**/*.js', '!src/**/*.soy.js', 'test/**/*.js', 'gulpfile.js'];
+
 	options.buildDest = options.buildDest || 'build/globals';
-	options.formatGlobs = options.formatGlobs || ['src/**/*.js', 'test/**/*.js', 'gulpfile.js'];
-	options.lintGlobs = options.lintGlobs || ['src/**/*.js', 'test/**/*.js', 'gulpfile.js'];
+	options.formatGlobs = options.formatGlobs || codeGlobs;
+	options.lintGlobs = options.lintGlobs || codeGlobs;
 	return options;
 }
 
