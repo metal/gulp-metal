@@ -8,9 +8,9 @@ var metaljs = require('metaljs');
 var runSequence = require('run-sequence');
 
 function auiTasks(options) {
-	metaljs(options);
-
 	options = normalizeOptions(options);
+
+	metaljs(options);
 
 	gulp.task('clean', function(done) {
 		del('build', done);
@@ -37,6 +37,7 @@ function auiTasks(options) {
 }
 
 function normalizeOptions(options) {
+	options.buildDest = options.buildDest || 'build/globals';
 	options.formatGlobs = options.formatGlobs || ['src/**/*.js', 'test/**/*.js', 'gulpfile.js'];
 	options.lintGlobs = options.lintGlobs || ['src/**/*.js', 'test/**/*.js', 'gulpfile.js'];
 }
