@@ -2,10 +2,12 @@
 
 var del = require('del');
 var esformatter = require('gulp-esformatter');
+var file = require('gulp-file');
 var gulp = require('gulp');
 var jshint = require('gulp-jshint');
 var metaljs = require('metaljs');
 var runSequence = require('run-sequence');
+var sass = require('gulp-sass');
 
 function auiTasks(options) {
 	options = normalizeOptions(options);
@@ -17,7 +19,16 @@ function auiTasks(options) {
 	});
 
 	gulp.task('build', function(done) {
-		runSequence('clean', 'build:globals', done);
+		runSequence('clean', ['build:globals', 'css'], done);
+	});
+
+	gulp.task('css', function() {
+		return gulp.src('src/**/*.scss')
+			.pipe(file('bootstrap.scss', '@import "bootstrap";'))
+			.pipe(sass({
+				includePaths: ['bower_components/bootstrap-sass/assets/stylesheets'],
+			}).on('error', sass.logError))
+			.pipe(gulp.dest('build'));
 	});
 
 	gulp.task('format', function() {
