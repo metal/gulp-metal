@@ -3,7 +3,7 @@
 var del = require('del');
 var esformatter = require('gulp-esformatter');
 var gulp = require('gulp');
-var jshint = require('jshint');
+var jshint = require('gulp-jshint');
 var metaljs = require('metaljs');
 var runSequence = require('run-sequence');
 
