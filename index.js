@@ -40,6 +40,7 @@ function normalizeOptions(options) {
 	options.buildDest = options.buildDest || 'build/globals';
 	options.formatGlobs = options.formatGlobs || ['src/**/*.js', 'test/**/*.js', 'gulpfile.js'];
 	options.lintGlobs = options.lintGlobs || ['src/**/*.js', 'test/**/*.js', 'gulpfile.js'];
+	return options;
 }
 
 module.exports = auiTasks;
