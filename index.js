@@ -19,7 +19,17 @@ function auiTasks(options) {
 	});
 
 	gulp.task('build', function(done) {
-		runSequence('clean', ['build:globals', 'css'], done);
+		runSequence('clean', ['build:js', 'css'], done);
+	});
+
+	gulp.task('build:js', function(done) {
+		runSequence('build:globals', done);
+	});
+
+	gulp.task('watch', function(done) { // jshint ignore:line
+		gulp.watch(options.buildSrc, ['build:js']);
+		gulp.watch(options.soySrc, ['soy']);
+		gulp.watch('src/**/*.scss', ['css']);
 	});
 
 	gulp.task('css', function() {
