@@ -37,7 +37,10 @@ function auiTasks(options) {
 			.pipe(file('bootstrap.scss', '@import "bootstrap";'))
 			.pipe(sass({
 				includePaths: ['bower_components/bootstrap-sass/assets/stylesheets'],
-			}).on('error', sass.logError))
+			}).on('error', function(err) {
+				sass.logError(err);
+				this.emit('end');
+			}))
 			.pipe(gulp.dest('build'));
 	});
 
