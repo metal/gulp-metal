@@ -36,7 +36,11 @@ function auiTasks(options) {
 	    base: process.cwd()
 	  };
 	  return gulp.src(options.formatGlobs, gulpOpts)
-	    .pipe(esformatter())
+	    .pipe(esformatter({
+				indent: {
+					value: '	'
+				}
+			}))
 	    .pipe(gulp.dest(process.cwd()));
 	});
 
