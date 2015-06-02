@@ -51,6 +51,8 @@ function normalizeOptions(options) {
 	var codeGlobs = ['src/**/*.js', '!src/**/*.soy.js', 'test/**/*.js', 'gulpfile.js'];
 
 	options.buildDest = options.buildDest || 'build/globals';
+	options.soyGeneratedDest = options.soyGeneratedDest || 'build';
+
 	options.formatGlobs = options.formatGlobs || codeGlobs;
 	options.lintGlobs = options.lintGlobs || codeGlobs;
 	return options;
