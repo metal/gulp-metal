@@ -29,11 +29,11 @@ function auiTasks(options) {
 	gulp.task('watch', function(done) { // jshint ignore:line
 		gulp.watch(options.buildSrc, ['build:js']);
 		gulp.watch(options.soySrc, ['soy']);
-		gulp.watch('src/**/*.scss', ['css']);
+		gulp.watch(options.cssSrc, ['css']);
 	});
 
 	gulp.task('css', function() {
-		return gulp.src('src/**/*.scss')
+		return gulp.src(options.cssSrc)
 			.pipe(file('bootstrap.scss', '@import "bootstrap";'))
 			.pipe(sass({
 				includePaths: ['bower_components/bootstrap-sass/assets/stylesheets'],
@@ -68,6 +68,7 @@ function normalizeOptions(options) {
 	var codeGlobs = ['src/**/*.js', '!src/**/*.soy.js', 'test/**/*.js', 'gulpfile.js'];
 
 	options.buildDest = options.buildDest || 'build/globals';
+	options.cssSrc = options.cssSrc || 'src/**/*.scss';
 	options.globalName = options.globalName || 'aui';
 	options.soyGeneratedDest = options.soyGeneratedDest || 'build';
 
