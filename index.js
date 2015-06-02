@@ -1,5 +1,6 @@
 'use strict';
 
+var concat = require('gulp-concat');
 var del = require('del');
 var esformatter = require('gulp-esformatter');
 var file = require('gulp-file');
@@ -29,18 +30,30 @@ function auiTasks(options) {
 	gulp.task('watch', function(done) { // jshint ignore:line
 		gulp.watch(options.buildSrc, ['build:js']);
 		gulp.watch(options.soySrc, ['soy']);
-		gulp.watch(options.cssSrc, ['css']);
+		gulp.watch(options.scssSrc, ['css']);
 	});
 
-	gulp.task('css', function() {
-		return gulp.src(options.cssSrc)
-			.pipe(file('bootstrap.scss', '@import "bootstrap";'))
+	gulp.task('css:bootstrap', function() {
+		var fileOpts = {
+			src: true
+		};
+		return file('bootstrap.scss', '@import "bootstrap";', fileOpts)
 			.pipe(sass({
 				includePaths: ['bower_components/bootstrap-sass/assets/stylesheets'],
 			}).on('error', function(err) {
 				sass.logError(err);
 				this.emit('end');
 			}))
+			.pipe(gulp.dest('build'));
+	});
+
+	gulp.task('css', ['css:bootstrap'], function() {
+		return gulp.src(options.scssSrc)
+			.pipe(sass().on('error', function(err) {
+				sass.logError(err);
+				this.emit('end');
+			}))
+			.pipe(concat(options.bundleCssFileName))
 			.pipe(gulp.dest('build'));
 	});
 
@@ -68,7 +81,8 @@ function normalizeOptions(options) {
 	var codeGlobs = ['src/**/*.js', '!src/**/*.soy.js', 'test/**/*.js', 'gulpfile.js'];
 
 	options.buildDest = options.buildDest || 'build/globals';
-	options.cssSrc = options.cssSrc || 'src/**/*.scss';
+	options.bundleCssFileName = options.bundleCssFileName || 'all.css';
+	options.scssSrc = options.scssSrc || 'src/**/*.scss';
 	options.globalName = options.globalName || 'aui';
 	options.soyGeneratedDest = options.soyGeneratedDest || 'build';
 
