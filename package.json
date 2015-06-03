@@ -1,9 +1,9 @@
 {
 	"name": "metal-tasks",
 	"version": "0.1.0",
-	"description": "Gulp tasks to be shared between AlloyUI components",
+	"description": "Gulp tasks to be shared between Metal components",
 	"license": "MIT",
-	"repository": "alloyui/tasks",
+	"repository": "metal/metal-tasks",
 	"author": {
 		"name": "Maira Bello",
 		"email": "maira.araujo@liferay.com"
@@ -19,7 +19,6 @@
 		"lint": "jshint index.js"
 	},
 	"keywords": [
-		"alloyui",
 		"gulp",
 		"metal",
 		"metaljs"
