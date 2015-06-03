@@ -1,38 +1,39 @@
 {
-	"name": "metal-tasks",
-	"version": "0.1.0",
-	"description": "Gulp tasks to be shared between Metal components",
-	"license": "MIT",
-	"repository": "metal/metal-tasks",
-	"author": {
-		"name": "Maira Bello",
-		"email": "maira.araujo@liferay.com"
-	},
-	"engines": {
-		"node": ">=0.12.0"
-	},
-	"main": "index.js",
-	"files": [
-		"index.js"
-	],
-	"scripts": {
-		"lint": "jshint index.js"
-	},
-	"keywords": [
-		"gulp",
-		"metal",
-		"metaljs"
-	],
-	"dependencies": {
-		"del": "^1.2.0",
-		"gulp": "^3.8.11",
-		"gulp-concat": "^2.5.2",
-		"gulp-esformatter": "^4.0.0",
-		"gulp-file": "^0.2.0",
-		"gulp-jshint": "^1.11.0",
-		"gulp-sass": "^2.0.1",
-		"jshint-stylish": "^2.0.0",
-		"metaljs": "liferay/metal.js",
-		"run-sequence": "^1.1.0"
-	}
+  "name": "metal-tasks",
+  "version": "0.1.0",
+  "description": "Gulp tasks to be shared between Metal components",
+  "license": "MIT",
+  "repository": "metal/metal-tasks",
+  "author": {
+    "name": "Maira Bello",
+    "email": "maira.araujo@liferay.com"
+  },
+  "engines": {
+    "node": ">=0.12.0"
+  },
+  "main": "index.js",
+  "files": [
+    "index.js"
+  ],
+  "scripts": {
+    "lint": "jshint index.js"
+  },
+  "keywords": [
+    "gulp",
+    "metal",
+    "metaljs"
+  ],
+  "dependencies": {
+    "del": "^1.2.0",
+    "gulp": "^3.8.11",
+    "gulp-concat": "^2.5.2",
+    "gulp-esformatter": "^4.0.0",
+    "gulp-file": "^0.2.0",
+    "gulp-jshint": "^1.11.0",
+    "gulp-sass": "^2.0.1",
+    "gulp-wrapper": "^1.0.0",
+    "jshint-stylish": "^2.0.0",
+    "metaljs": "liferay/metal.js",
+    "run-sequence": "^1.1.0"
+  }
 }
