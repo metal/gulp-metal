@@ -20,7 +20,11 @@ function auiTasks(options) {
 	});
 
 	gulp.task('build', function(done) {
-		runSequence('clean', ['build:js', 'css'], done);
+		var buildTasks = ['build:js'];
+		if (!options.skipCssBuild) {
+			buildTasks.push('css');
+		}
+		runSequence('clean', buildTasks, done);
 	});
 
 	gulp.task('build:js', function(done) {
@@ -83,6 +87,7 @@ function normalizeOptions(options) {
 	options.buildDest = options.buildDest || 'build/globals';
 	options.bundleCssFileName = options.bundleCssFileName || 'all.css';
 	options.scssSrc = options.scssSrc || 'src/**/*.scss';
+	options.skipCssBuild = !!options.skipCssBuild;
 	options.soyGeneratedDest = options.soyGeneratedDest || 'build';
 
 	options.formatGlobs = options.formatGlobs || codeGlobs;
