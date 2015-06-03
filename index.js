@@ -10,6 +10,7 @@ var metaljs = require('metaljs');
 var path = require('path');
 var runSequence = require('run-sequence');
 var sass = require('gulp-sass');
+var sourcemaps = require('gulp-sourcemaps');
 var wrapper = require('gulp-wrapper');
 
 function auiTasks(options) {
@@ -30,25 +31,33 @@ function auiTasks(options) {
 	});
 
 	gulp.task('build:js', function(done) {
-		runSequence('soy', ['build:globals:js', 'build:globals:jquery'], done);
+		runSequence('soy', ['build:globals:js', 'build:globals:jquery', 'build:jquery'], done);
 	});
 
 	gulp.task('build:globals:jquery', function() {
 		return gulp.src(options.buildSrc)
 			.pipe(wrapper({
-				footer: function(file) {
-					if (file.path.substr(file.path.length - 7) === '.soy.js') {
-						return '';
-					}
-					var className = path.basename(file.path);
-					className = className.substr(0, className.length - 3);
-					var classNameLowerCase = className[0].toLowerCase() + className.substr(1);
-					return 'import JQueryAdapter from \'bower:metal-jquery-adapter/src/JQueryAdapter\';' +
-						'JQueryAdapter.register(\'' + classNameLowerCase + '\', ' + className + ')';
-				}
+				footer: addJQueryAdapterRegistration
 			}))
+			.pipe(sourcemaps.init())
 			.pipe(metaljs.buildLazyPipes.buildGlobals(options)())
+			.pipe(sourcemaps.write('./'))
 			.pipe(gulp.dest(options.buildGlobalsJqueryDest));
+	});
+
+	gulp.task('build:jquery', function() {
+		return gulp.src(options.buildSrc)
+			.pipe(wrapper({
+				footer: addJQueryAdapterRegistration
+			}))
+			.pipe(sourcemaps.init())
+			.pipe(metaljs.buildLazyPipes.buildGlobals(options)())
+			.pipe(wrapper({
+				header: 'new (function () { ',
+				footer: '})();'
+			}))
+			.pipe(sourcemaps.write('./'))
+			.pipe(gulp.dest(options.buildJqueryDest));
 	});
 
 	gulp.task('watch', function(done) { // jshint ignore:line
@@ -106,6 +115,7 @@ function normalizeOptions(options) {
 
 	options.buildDest = options.buildDest || 'build/globals';
 	options.buildGlobalsJqueryDest = options.buildGlobalsJqueryDest || 'build/globals-jquery';
+	options.buildJqueryDest = options.buildJqueryDest || 'build/jquery';
 	options.bundleCssFileName = options.bundleCssFileName || 'all.css';
 	options.scssSrc = options.scssSrc || 'src/**/*.scss';
 	options.skipCssBuild = !!options.skipCssBuild;
@@ -114,6 +124,17 @@ function normalizeOptions(options) {
 	options.formatGlobs = options.formatGlobs || codeGlobs;
 	options.lintGlobs = options.lintGlobs || codeGlobs;
 	return options;
+}
+
+function addJQueryAdapterRegistration(file) {
+	if (file.path.substr(file.path.length - 7) === '.soy.js') {
+		return '';
+	}
+	var className = path.basename(file.path);
+	className = className.substr(0, className.length - 3);
+	var classNameLowerCase = className[0].toLowerCase() + className.substr(1);
+	return 'import JQueryAdapter from \'bower:metal-jquery-adapter/src/JQueryAdapter\';' +
+		'JQueryAdapter.register(\'' + classNameLowerCase + '\', ' + className + ')';
 }
 
 module.exports = auiTasks;
