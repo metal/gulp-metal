@@ -83,7 +83,6 @@ function normalizeOptions(options) {
 	options.buildDest = options.buildDest || 'build/globals';
 	options.bundleCssFileName = options.bundleCssFileName || 'all.css';
 	options.scssSrc = options.scssSrc || 'src/**/*.scss';
-	options.globalName = options.globalName || 'aui';
 	options.soyGeneratedDest = options.soyGeneratedDest || 'build';
 
 	options.formatGlobs = options.formatGlobs || codeGlobs;

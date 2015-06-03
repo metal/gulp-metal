@@ -1,12 +1,12 @@
-# AlloyUI Tasks
+# Metal Tasks
 
-Gulp tasks to be shared between AlloyUI components.
+Gulp tasks to be shared between Metal components.
 
 ## Usage
-This is a collection of tasks to be used by AlloyUI components. It contains all Metal.js [tasks](https://github.com/liferay/metal.js#tools) plus a few more that are specific to AlloyUI, like css handling and different build outputs.
+This is a collection of tasks to be used by Metal components. It contains all Metal.js original [tasks](https://github.com/liferay/metal.js#tools) plus a few more that are specific to UI components, like css handling and different build outputs.
 To use it, just call the function with the desired options, like this:
 
 ```javascript
-var auiTasks = require('aui-tasks');
-auiTasks(options);
+var metalTasks = require('metal-tasks');
+metalTasks(options);
 ```

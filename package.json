@@ -1,5 +1,5 @@
 {
-	"name": "aui-tasks",
+	"name": "metal-tasks",
 	"version": "0.1.0",
 	"description": "Gulp tasks to be shared between AlloyUI components",
 	"license": "MIT",
@@ -19,9 +19,9 @@
 		"lint": "jshint index.js"
 	},
 	"keywords": [
-		"aui",
 		"alloyui",
 		"gulp",
+		"metal",
 		"metaljs"
 	],
 	"dependencies": {
