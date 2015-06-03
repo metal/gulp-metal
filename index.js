@@ -6,7 +6,7 @@ var esformatter = require('gulp-esformatter');
 var file = require('gulp-file');
 var gulp = require('gulp');
 var jshint = require('gulp-jshint');
-var metaljs = require('metaljs');
+var metal = require('metal');
 var path = require('path');
 var runSequence = require('run-sequence');
 var sass = require('gulp-sass');
@@ -16,7 +16,7 @@ var wrapper = require('gulp-wrapper');
 function auiTasks(options) {
 	options = normalizeOptions(options);
 
-	metaljs(options);
+	metal(options);
 
 	gulp.task('clean', function(done) {
 		del('build', done);
@@ -40,7 +40,7 @@ function auiTasks(options) {
 				footer: addJQueryAdapterRegistration
 			}))
 			.pipe(sourcemaps.init())
-			.pipe(metaljs.buildLazyPipes.buildGlobals(options)())
+			.pipe(metal.buildLazyPipes.buildGlobals(options)())
 			.pipe(sourcemaps.write('./'))
 			.pipe(gulp.dest(options.buildGlobalsJqueryDest));
 	});
@@ -51,7 +51,7 @@ function auiTasks(options) {
 				footer: addJQueryAdapterRegistration
 			}))
 			.pipe(sourcemaps.init())
-			.pipe(metaljs.buildLazyPipes.buildGlobals(options)())
+			.pipe(metal.buildLazyPipes.buildGlobals(options)())
 			.pipe(wrapper({
 				header: 'new (function () { ',
 				footer: '})();'

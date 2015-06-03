@@ -20,8 +20,7 @@
   },
   "keywords": [
     "gulp",
-    "metal",
-    "metaljs"
+    "metal"
   ],
   "dependencies": {
     "del": "^1.2.0",
@@ -34,7 +33,7 @@
     "gulp-sourcemaps": "^1.5.2",
     "gulp-wrapper": "^1.0.0",
     "jshint-stylish": "^2.0.0",
-    "metaljs": "liferay/metal.js",
+    "metal": "metal/metal.js#master",
     "run-sequence": "^1.1.0"
   }
 }
