@@ -1,5 +1,6 @@
 'use strict';
 
+var babelDeps = require('gulp-babel-deps');
 var concat = require('gulp-concat');
 var del = require('del');
 var esformatter = require('gulp-esformatter');
@@ -31,7 +32,7 @@ function auiTasks(options) {
 	});
 
 	gulp.task('build:js', function(done) {
-		runSequence('soy', ['build:globals:js', 'build:globals:jquery', 'build:jquery'], done);
+		runSequence('soy', ['build:globals:js', 'build:globals:jquery', 'build:jquery', 'build:amd'], done);
 	});
 
 	gulp.task('build:globals:jquery', function() {
@@ -58,6 +59,28 @@ function auiTasks(options) {
 			}))
 			.pipe(sourcemaps.write('./'))
 			.pipe(gulp.dest(options.buildJqueryDest));
+	});
+
+	gulp.task('build:amd', function() {
+		return gulp.src('src/**/*.js', {base: process.cwd()})
+			.pipe(babelDeps({
+				babel: {
+					compact: false,
+					modules: 'amd',
+					resolveModuleSource: function(source, filename) {
+						return getAmdModuleId(renameWithoutJsExt(source, filename), options.moduleName);
+					},
+					sourceMaps: true
+				},
+				fetchFromOriginalModuleSource: true,
+				resolveModuleToPath: function(source, filename) {
+					return renameWithoutJsExt(source, filename) + '.js';
+				}
+			}))
+			.pipe(gulp.dest(function(file) {
+				file.path = path.join(file.base, getAmdModuleId(file.path, options.moduleName));
+				return options.buildAmdDest;
+			}));
 	});
 
 	gulp.task('watch', function(done) { // jshint ignore:line
@@ -113,10 +136,12 @@ function auiTasks(options) {
 function normalizeOptions(options) {
 	var codeGlobs = ['src/**/*.js', '!src/**/*.soy.js', 'test/**/*.js', 'gulpfile.js'];
 
+	options.buildAmdDest = options.buildAmdDest || 'build/amd';
 	options.buildDest = options.buildDest || 'build/globals';
 	options.buildGlobalsJqueryDest = options.buildGlobalsJqueryDest || 'build/globals-jquery';
 	options.buildJqueryDest = options.buildJqueryDest || 'build/jquery';
 	options.bundleCssFileName = options.bundleCssFileName || 'all.css';
+	options.moduleName = options.moduleName || 'metal';
 	options.scssSrc = options.scssSrc || 'src/**/*.scss';
 	options.skipCssBuild = !!options.skipCssBuild;
 	options.soyGeneratedDest = options.soyGeneratedDest || 'build';
@@ -135,6 +160,24 @@ function addJQueryAdapterRegistration(file) {
 	var classNameLowerCase = className[0].toLowerCase() + className.substr(1);
 	return 'import JQueryAdapter from \'bower:metal-jquery-adapter/src/JQueryAdapter\';' +
 		'JQueryAdapter.register(\'' + classNameLowerCase + '\', ' + className + ')';
+}
+
+function renameWithoutJsExt(source, filename) {
+	var renamed = metal.renameAlias(source, filename);
+	if (renamed.substr(renamed.length - 3) === '.js') {
+		renamed = renamed.substr(0, renamed.length - 3);
+	}
+	return renamed;
+}
+
+function getAmdModuleId(moduleName, mainModuleName) {
+	var bowerDir = path.resolve('bower_components');
+	var relative = path.relative(bowerDir, moduleName);
+	if (relative[0] === '.') {
+		return path.join(mainModuleName, path.relative(process.cwd(), moduleName));
+	} else {
+		return relative;
+	}
 }
 
 module.exports = auiTasks;
