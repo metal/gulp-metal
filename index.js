@@ -62,7 +62,7 @@ function auiTasks(options) {
 	});
 
 	gulp.task('build:amd', function() {
-		return gulp.src('src/**/*.js', {base: process.cwd()})
+		return gulp.src(options.buildSrc, {base: process.cwd()})
 			.pipe(babelDeps({
 				babel: {
 					compact: false,
