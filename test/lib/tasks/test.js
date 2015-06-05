@@ -28,7 +28,7 @@ describe('Test Tasks', function() {
 
 		// We need to delay requiring `registerTasks` until mockery has already been
 		// enabled and prepared.
-		registerTestTasks = require('../../lib/test');
+		registerTestTasks = require('../../../lib/tasks/test');
 	});
 
 	beforeEach(function() {

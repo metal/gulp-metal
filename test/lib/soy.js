@@ -4,7 +4,7 @@ var assert = require('assert');
 var fs = require('fs');
 var gulp = require('gulp');
 var path = require('path');
-var registerSoyTasks = require('../../lib/soy');
+var registerTasks = require('../../lib/tasks/index');
 require('../fixture/soyutils-mock');
 
 global.Templates = {};
@@ -20,7 +20,7 @@ describe('Soy Task', function() {
 	});
 
 	it('should generate extra templates', function(done) {
-		registerSoyTasks({
+		registerTasks({
 			soyDest: 'soy',
 			soySrc: ['soy/simple.soy']
 		});
@@ -42,7 +42,7 @@ describe('Soy Task', function() {
 	});
 
 	it('should not generate deltemplate for the main and surface elements if one already exists', function(done) {
-		registerSoyTasks({
+		registerTasks({
 			soyDest: 'soy',
 			soySrc: ['soy/definedElement.soy']
 		});
@@ -67,7 +67,7 @@ describe('Soy Task', function() {
 	});
 
 	it('should set the "params" variable for each template, with a list of its param names', function(done) {
-		registerSoyTasks({
+		registerTasks({
 			soyDest: 'soy',
 			soySrc: ['soy/simple.soy']
 		});
@@ -83,7 +83,7 @@ describe('Soy Task', function() {
 	});
 
 	it('should not add optional params to the "params" variable', function(done) {
-		registerSoyTasks({
+		registerTasks({
 			soyDest: 'soy',
 			soySrc: ['soy/optionalParam.soy']
 		});
@@ -99,7 +99,7 @@ describe('Soy Task', function() {
 	});
 
 	it('should add lines to generated soy js file that import ComponentRegistry', function(done) {
-		registerSoyTasks({
+		registerTasks({
 			soyDest: 'soy',
 			soySrc: ['soy/simple.soy']
 		});
@@ -112,7 +112,7 @@ describe('Soy Task', function() {
 	});
 
 	it('should import ComponentRegistry according to core path indicated by the corePathFromSoy option', function(done) {
-		registerSoyTasks({
+		registerTasks({
 			corePathFromSoy: 'some/path',
 			soyDest: 'soy',
 			soySrc: ['soy/simple.soy']
@@ -127,7 +127,7 @@ describe('Soy Task', function() {
 	});
 
 	it('should import ComponentRegistry according to core path indicated by the result of the corePathFromSoy option fn', function(done) {
-		registerSoyTasks({
+		registerTasks({
 			corePathFromSoy: function() {
 				return 'fn/path';
 			},

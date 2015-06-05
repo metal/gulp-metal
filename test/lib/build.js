@@ -4,17 +4,13 @@ var assert = require('assert');
 var fs = require('fs');
 var gulp = require('gulp');
 var path = require('path');
-var registerTasks = require('../../metal');
+var registerTasks = require('../../lib/tasks/index');
 var sinon = require('sinon');
 
 describe('Build Tasks', function() {
 	before(function() {
 		this.initialCwd_ = process.cwd();
 		process.chdir(path.join(__dirname, 'assets'));
-
-		gulp.task('soy', function(done) {
-			done();
-		});
 	});
 
 	after(function() {
@@ -28,7 +24,7 @@ describe('Build Tasks', function() {
 		});
 
 		gulp.start('build:globals', function() {
-			var contents = fs.readFileSync('build/foo.js', 'utf8');
+			var contents = fs.readFileSync('build/globals/foo.js', 'utf8');
 			eval.call(global, contents);
 
 			assert.ok(global.foo);

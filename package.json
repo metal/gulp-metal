@@ -16,7 +16,8 @@
     "index.js"
   ],
   "scripts": {
-    "lint": "jshint index.js metal.js lib/*.js"
+    "lint": "jshint index.js lib/*.js lib/tasks/*.js",
+    "test": "mocha test/lib/*.js test/lib/tasks/*.js --slow 1000 --timeout 3000"
   },
   "keywords": [
     "gulp",
