@@ -13,7 +13,9 @@
   },
   "main": "index.js",
   "files": [
-    "index.js"
+    "index.js",
+    "lib/**/*.js",
+    "lib/**/*.tmpl"
   ],
   "scripts": {
     "lint": "jshint index.js lib/*.js lib/tasks/*.js",
