@@ -1,9 +1,9 @@
 {
-  "name": "metal-tasks",
+  "name": "gulp-metal",
   "version": "0.1.0",
-  "description": "Gulp tasks to be shared between Metal components",
+  "description": "Gulp pipelines and tasks to be shared between Metal components",
   "license": "MIT",
-  "repository": "metal/metal-tasks",
+  "repository": "metal/gulp-metal",
   "author": {
     "name": "Maira Bello",
     "email": "maira.araujo@liferay.com"

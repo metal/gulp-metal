@@ -1,6 +1,6 @@
 # Metal Tasks
 
-Gulp tasks to be shared between Metal components.
+Gulp pipelines and tasks to be shared between Metal components.
 
 ## Usage
 This is a collection of tasks to be used by Metal components. To use them, just install this through [npm](https://www.npmjs.com/package/gulp-metal) and register the tasks on your gulpfile like this:
