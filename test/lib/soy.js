@@ -147,7 +147,10 @@ describe('Soy Task', function() {
 function loadSoyFile(filePath) {
 	var contents = fs.readFileSync(filePath, 'utf8');
 	contents = contents.split('\n');
+	// Remove the first 3 lines, since they have an ES6 import declaration.
 	contents.splice(0, 3);
+	// Remove the last 3 lines, since they have an ES6 export declaration.
+	contents.splice(contents.length - 3, 3);
 	contents = contents.join('\n');
 	eval(contents);
 }
