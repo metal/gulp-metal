@@ -34,7 +34,6 @@
     "gulp-babel-globals": "^0.2.0",
     "gulp-concat": "^2.5.2",
     "gulp-esformatter": "^4.0.0",
-    "gulp-file": "^0.2.0",
     "gulp-if": "^1.2.5",
     "gulp-ignore": "^1.2.1",
     "gulp-jshint": "^1.11.0",
