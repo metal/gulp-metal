@@ -52,21 +52,38 @@ describe('Test Tasks', function() {
 			var config = karma.server.start.args[0][0];
 			assert.strictEqual(2, Object.keys(config).length);
 			assert.ok(config.configFile);
+			assert.notStrictEqual(-1, config.configFile.indexOf('karma.conf.js'));
 			assert.ok(config.singleRun);
 			done();
 		});
 	});
 
-	it('should open coverage file when test:coverage is run', function(done) {
+	it('should run unit tests with the coverage karma config file when test:coverage is run', function(done) {
 		registerTestTasks();
 
-		assert.strictEqual(0, openFile.callCount);
 		gulp.start('test:coverage', function() {
 			assert.strictEqual(1, karma.server.start.callCount);
 
 			var config = karma.server.start.args[0][0];
 			assert.strictEqual(2, Object.keys(config).length);
 			assert.ok(config.configFile);
+			assert.notStrictEqual(-1, config.configFile.indexOf('karma-coverage.conf.js'));
+			assert.ok(config.singleRun);
+			done();
+		});
+	});
+
+	it('should open coverage file when test:coverage:open is run', function(done) {
+		registerTestTasks();
+
+		assert.strictEqual(0, openFile.callCount);
+		gulp.start('test:coverage:open', function() {
+			assert.strictEqual(1, karma.server.start.callCount);
+
+			var config = karma.server.start.args[0][0];
+			assert.strictEqual(2, Object.keys(config).length);
+			assert.ok(config.configFile);
+			assert.notStrictEqual(-1, config.configFile.indexOf('karma-coverage.conf.js'));
 			assert.ok(config.singleRun);
 
 			assert.strictEqual(1, openFile.callCount);
