@@ -33,7 +33,7 @@ Watches for changes on the source files, rebuilding the code to the globals form
 
 ### Test Tasks
 
-Metal.js also provides gulp tasks to help with testing modules built with Metal.js. The tasks assume that tests are written in [karma](http://karma-runner.github.io/0.12/index.html), and so there should be a **karma.conf.js** file. A sample karma.conf.js file can be found at [generator-metal](https://github.com/metal/generator-metal/blob/master/app/templates/_karma.conf.js), which works well with Metal.js, including correct coverage reports.
+Metal.js also provides gulp tasks to help with testing modules built with Metal.js. The tasks assume that tests are written in [karma](http://karma-runner.github.io/0.12/index.html), and so there should be a **karma.conf.js** file. A sample karma.conf.js file can be found at [generator-metal](https://github.com/metal/generator-metal/tree/master/app/templates), which works well with Metal.js, including correct coverage reports.
 
 #### `gulp test`
 Runs all tests once.
