@@ -5,6 +5,7 @@ var fs = require('fs');
 var gulp = require('gulp');
 var path = require('path');
 var registerTasks = require('../../lib/tasks/index');
+var sinon = require('sinon');
 require('../fixture/soyutils-mock');
 
 global.Templates = {};
@@ -139,6 +140,20 @@ describe('Soy Task', function() {
 			var contents = fs.readFileSync('soy/simple.soy.js', 'utf8');
 			assert.strictEqual(-1, contents.indexOf('import ComponentRegistry from \'bower:metal/src/component/ComponentRegistry\';'));
 			assert.notStrictEqual(-1, contents.indexOf('import ComponentRegistry from \'fn/path/component/ComponentRegistry\';'));
+			done();
+		});
+	});
+
+	it('should trigger "end" event even when task throws error for invalid soy file', function(done) {
+		registerTasks({
+			soyDest: 'soy',
+			soySrc: ['soy/invalid.soy']
+		});
+		sinon.stub(console, 'error');
+
+		gulp.start('soy', function() {
+			assert.strictEqual(2, console.error.callCount);
+			console.error.restore();
 			done();
 		});
 	});

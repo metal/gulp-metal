@@ -48,6 +48,7 @@ describe('Build Tasks', function() {
 
 		gulp.start('build:globals', function() {
 			assert.strictEqual(1, console.error.callCount);
+			console.error.restore();
 			done();
 		});
 	});
