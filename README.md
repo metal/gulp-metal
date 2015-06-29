@@ -6,8 +6,9 @@ Gulp pipelines and tasks to be shared between Metal components.
 This is a collection of tasks to be used by Metal components. To use them, just install this through [npm](https://www.npmjs.com/package/gulp-metal) and register the tasks on your gulpfile like this:
 
 ```js
-var metalTasks = require('metalTasks');
-metalTasks.registerTasks(options);
+
+var metal = require('gulp-metal');
+metal.registerTasks(options);
 ```
 
 As you can see, the metal function receives an optional object to customize the registered functions. Each task has its own options, but the `taskPrefix` option affects all task, registering them all with the provided prefix before the original names.
@@ -32,7 +33,7 @@ Watches for changes on the source files, rebuilding the code to the globals form
 
 ### Test Tasks
 
-Metal.js also provides gulp tasks to help with testing modules built with Metal.js. The tasks assume that tests are written in [karma](http://karma-runner.github.io/0.12/index.html), and so there should be a **karma.conf.js** file. A sample karma.conf.js file can be found at [metal-boilerplate](https://github.com/metal/metal-boilerplate/blob/master/karma.conf.js), which works well with Metal.js, including correct coverage reports.
+Metal.js also provides gulp tasks to help with testing modules built with Metal.js. The tasks assume that tests are written in [karma](http://karma-runner.github.io/0.12/index.html), and so there should be a **karma.conf.js** file. A sample karma.conf.js file can be found at [generator-metal](https://github.com/metal/generator-metal/blob/master/app/templates/_karma.conf.js), which works well with Metal.js, including correct coverage reports.
 
 #### `gulp test`
 Runs all tests once.
