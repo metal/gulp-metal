@@ -1,7 +1,7 @@
 'use strict';
 
-var build = require('./lib/build');
-var soy = require('./lib/soy');
+var build = require('./lib/pipelines/build');
+var soy = require('./lib/pipelines/soy');
 var registerTasks = require('./lib/tasks/index');
 var renameAlias = require('./lib/renameAlias');
 
