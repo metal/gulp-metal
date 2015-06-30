@@ -4,13 +4,13 @@ var assert = require('assert');
 var fs = require('fs');
 var gulp = require('gulp');
 var path = require('path');
-var registerTasks = require('../../lib/tasks/index');
+var registerTasks = require('../../../lib/tasks/index');
 var sinon = require('sinon');
 
-describe('Build Tasks', function() {
+describe('Global Build Tasks', function() {
 	before(function() {
 		this.initialCwd_ = process.cwd();
-		process.chdir(path.join(__dirname, 'assets'));
+		process.chdir(path.resolve(__dirname, '../assets'));
 	});
 
 	after(function() {
