@@ -83,6 +83,18 @@ describe('Global Build Tasks', function() {
 		});
 	});
 
+	it('should output minified version of the globals bundle', function(done) {
+		registerGlobalTasks({
+			bundleFileName: 'foo.js',
+			globalName: 'foo'
+		});
+
+		gulp.start('build:globals', function() {
+			assert.ok(fs.existsSync('build/globals/foo-min.js'));
+			done();
+		});
+	});
+
 	it('should trigger "end" event even when build:globals throws error for invalid js', function(done) {
 		registerGlobalTasks({
 			buildSrc: 'invalidSrc/Invalid.js',

@@ -13,7 +13,7 @@ var build = rewire('../../../lib/pipelines/build');
 var registerJQueryTasks = rewire('../../../lib/tasks/jquery');
 var renameAlias = rewire('../../../lib/renameAlias');
 
-describe.only('jQuery Build Tasks', function() {
+describe('jQuery Build Tasks', function() {
 	before(function() {
 		this.initialCwd_ = process.cwd();
 		process.chdir(path.resolve(__dirname, '../assets'));
