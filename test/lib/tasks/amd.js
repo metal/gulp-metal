@@ -5,24 +5,13 @@ var del = require('del');
 var fs = require('fs');
 var gulp = require('gulp');
 var path = require('path');
+var registerAmdTasks = require('../../../lib/tasks/amd');
 var registerSoyTasks = require('../../../lib/tasks/soy');
-var rewire = require('rewire');
-
-var registerAmdTasks = rewire('../../../lib/tasks/amd');
-var renameAlias = rewire('../../../lib/renameAlias');
 
 describe('AMD Build Task', function() {
 	before(function() {
 		this.initialCwd_ = process.cwd();
 		process.chdir(path.resolve(__dirname, '../assets'));
-
-		function getBowerDir() {
-			return path.resolve('bower_components');
-		}
-
-		renameAlias.__set__('getBowerDir',  getBowerDir);
-		registerAmdTasks.__set__('getBowerDir',  getBowerDir);
-		registerAmdTasks.__set__('renameAlias',  renameAlias);
 
 		registerSoyTasks();
 	});

@@ -5,24 +5,14 @@ var del = require('del');
 var fs = require('fs');
 var gulp = require('gulp');
 var path = require('path');
+var registerGlobalTasks = require('../../../lib/tasks/globals');
 var registerSoyTasks = require('../../../lib/tasks/soy');
-var rewire = require('rewire');
 var sinon = require('sinon');
-
-var build = rewire('../../../lib/pipelines/build');
-var registerGlobalTasks = rewire('../../../lib/tasks/globals');
-var renameAlias = rewire('../../../lib/renameAlias');
 
 describe('Global Build Tasks', function() {
 	before(function() {
 		this.initialCwd_ = process.cwd();
 		process.chdir(path.resolve(__dirname, '../assets'));
-
-		build.__set__('renameAlias', renameAlias);
-		renameAlias.__set__('getBowerDir',  function() {
-			return path.resolve('bower_components');
-		});
-		registerGlobalTasks.__set__('build',  build);
 
 		registerSoyTasks();
 	});
