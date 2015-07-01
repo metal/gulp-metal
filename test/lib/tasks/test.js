@@ -20,6 +20,7 @@ describe('Test Tasks', function() {
 
 	beforeEach(function() {
 		sinon.stub(karma.server, 'start').callsArg(1);
+		openFile.callCount = 0;
 	});
 
 	afterEach(function() {
@@ -129,6 +130,61 @@ describe('Test Tasks', function() {
 
 			gulp.watch.restore();
 			done();
+		});
+	});
+
+	describe('Task Prefix', function() {
+		before(function() {
+			registerTestTasks({
+				taskPrefix: 'myPrefix:'
+			});
+
+			gulp.task('myPrefix:soy', function(done) {
+				done();
+			});
+		});
+
+		it('should use task prefix for "test" task when it\'s defined', function(done) {
+			gulp.start('myPrefix:test', function() {
+				assert.strictEqual(1, karma.server.start.callCount);
+				done();
+			});
+		});
+
+		it('should use task prefix for "test:coverage" task when it\'s defined', function(done) {
+			gulp.start('myPrefix:test:coverage', function() {
+				assert.strictEqual(1, karma.server.start.callCount);
+				done();
+			});
+		});
+
+		it('should use task prefix for "test:coverage:open" task when it\'s defined', function(done) {
+			gulp.start('myPrefix:test:coverage:open', function() {
+				assert.strictEqual(1, karma.server.start.callCount);
+				assert.strictEqual(1, openFile.callCount);
+				done();
+			});
+		});
+
+		it('should use task prefix for "test:browsers" task when it\'s defined', function(done) {
+			gulp.start('myPrefix:test:browsers', function() {
+				assert.strictEqual(1, karma.server.start.callCount);
+				done();
+			});
+		});
+
+		it('should use task prefix for "test:saucelabs" task when it\'s defined', function(done) {
+			gulp.start('myPrefix:test:saucelabs', function() {
+				assert.strictEqual(1, karma.server.start.callCount);
+				done();
+			});
+		});
+
+		it('should use task prefix for "test:watch" task when it\'s defined', function(done) {
+			gulp.start('myPrefix:test:watch', function() {
+				assert.strictEqual(1, karma.server.start.callCount);
+				done();
+			});
 		});
 	});
 });

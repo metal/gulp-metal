@@ -16,6 +16,10 @@ describe('Soy Task', function() {
 		process.chdir(path.resolve(__dirname, '../assets'));
 	});
 
+	beforeEach(function() {
+		Templates = {};
+	});
+
 	after(function() {
 		process.chdir(this.initialCwd_);
 	});
@@ -92,7 +96,7 @@ describe('Soy Task', function() {
 		gulp.start('soy', function() {
 			loadSoyFile('soy/optionalParam.soy.js');
 
-			assert.ok(Templates.Simple.hello.params);
+			assert.ok(Templates.OptionalParam.hello.params);
 			assert.deepEqual(['firstName'], Templates.OptionalParam.hello.params);
 
 			done();
@@ -140,6 +144,24 @@ describe('Soy Task', function() {
 			var contents = fs.readFileSync('soy/simple.soy.js', 'utf8');
 			assert.strictEqual(-1, contents.indexOf('import ComponentRegistry from \'bower:metal/src/component/ComponentRegistry\';'));
 			assert.notStrictEqual(-1, contents.indexOf('import ComponentRegistry from \'fn/path/component/ComponentRegistry\';'));
+			done();
+		});
+	});
+
+	it('should use task prefix when it\'s defined', function(done) {
+		registerTasks({
+			soyDest: 'soy',
+			soySrc: ['soy/simple.soy'],
+			taskPrefix: 'myPrefix:'
+		});
+
+		gulp.start('myPrefix:soy', function() {
+			loadSoyFile('soy/simple.soy.js');
+
+			assert.ok(Templates.Simple);
+			assert.ok(Templates.Simple.content);
+			assert.ok(Templates.Simple.hello);
+
 			done();
 		});
 	});

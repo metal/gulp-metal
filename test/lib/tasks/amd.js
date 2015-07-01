@@ -67,4 +67,20 @@ describe('AMD Build Task', function() {
 			done();
 		});
 	});
+
+	it('should use task prefix when it\'s defined', function(done) {
+		var options = {
+			moduleName: 'foo',
+			taskPrefix: 'myPrefix:'
+		};
+		registerAmdTasks(options);
+		registerSoyTasks(options);
+
+		gulp.start('myPrefix:build:amd', function() {
+			assert.ok(fs.existsSync('build/amd/foo/src/Foo.js'));
+			assert.ok(fs.existsSync('build/amd/foo/src/Bar.js'));
+			assert.ok(fs.existsSync('build/amd/dep/src/core.js'));
+			done();
+		});
+	});
 });

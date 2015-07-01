@@ -28,6 +28,19 @@ describe('CSS Task', function() {
 		});
 	});
 
+	it('should use task prefix when it\'s defined', function(done) {
+		registerTasks({
+			taskPrefix: 'myPrefix:'
+		});
+
+		gulp.start('myPrefix:css', function() {
+			var contents = fs.readFileSync('build/all.css', 'utf8');
+			assert.notStrictEqual(-1, contents.indexOf('.foo'));
+			assert.notStrictEqual(-1, contents.indexOf('.sass'));
+			done();
+		});
+	});
+
 	it('should get css and sass files from requested src', function(done) {
 		registerTasks({
 			cssSrc: 'css/anotherPath.css',

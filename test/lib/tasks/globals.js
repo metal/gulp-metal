@@ -1,6 +1,7 @@
 'use strict';
 
 var assert = require('assert');
+var del = require('del');
 var fs = require('fs');
 var gulp = require('gulp');
 var path = require('path');
@@ -29,6 +30,10 @@ describe('Global Build Tasks', function() {
 		registerSoyTasks();
 	});
 
+	beforeEach(function(done) {
+		del('build/globals', done);
+	});
+
 	after(function() {
 		process.chdir(this.initialCwd_);
 		restoreHandlers.forEach(function(handler) {
@@ -53,6 +58,27 @@ describe('Global Build Tasks', function() {
 			var foo = new global.foo.Foo();
 			assert.ok(foo instanceof global.foo.Bar);
 
+			delete global.foo;
+			done();
+		});
+	});
+
+	it('should use task prefix when it\'s defined', function(done) {
+		registerGlobalTasks({
+			bundleFileName: 'foo.js',
+			globalName: 'foo',
+			taskPrefix: 'myPrefix:'
+		});
+
+		gulp.start('myPrefix:build:globals', function() {
+			var contents = fs.readFileSync('build/globals/foo.js', 'utf8');
+			eval.call(global, contents);
+
+			assert.ok(global.foo);
+			assert.ok(global.foo.Bar);
+			assert.ok(global.foo.Foo);
+
+			delete global.foo;
 			done();
 		});
 	});
