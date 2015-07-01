@@ -18,7 +18,7 @@
     "lib/**/*.tmpl"
   ],
   "scripts": {
-    "lint": "jshint index.js lib/*.js lib/tasks/*.js",
+    "lint": "jshint index.js lib/*.js lib/tasks/*.js test/lib/*.js test/lib/tasks/*.js",
     "test": "mocha test/lib/*.js test/lib/tasks/*.js --slow 1000 --timeout 3000"
   },
   "keywords": [
@@ -57,6 +57,7 @@
   "devDependencies": {
     "mocha": "^2.2.5",
     "mockery": "^1.4.0",
+    "rewire": "^2.3.4",
     "sinon": "^1.14.1"
   }
 }
