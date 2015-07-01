@@ -56,7 +56,6 @@
   },
   "devDependencies": {
     "mocha": "^2.2.5",
-    "mockery": "^1.4.0",
     "rewire": "^2.3.4",
     "sinon": "^1.14.1"
   }

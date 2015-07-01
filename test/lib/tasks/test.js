@@ -3,11 +3,11 @@
 var assert = require('assert');
 var gulp = require('gulp');
 var karma = require('karma');
-var mockery = require('mockery');
+var rewire = require('rewire');
 var sinon = require('sinon');
 
-var openFile;
-var registerTestTasks;
+var openFile = sinon.stub();
+var registerTestTasks = rewire('../../../lib/tasks/test');
 
 describe('Test Tasks', function() {
 	before(function() {
@@ -15,20 +15,7 @@ describe('Test Tasks', function() {
 			done();
 		});
 
-		mockery.enable({
-			useCleanCache: true,
-			warnOnReplace: false,
-			warnOnUnregistered: false
-		});
-
-		openFile = sinon.stub();
-		mockery.registerMock('open', openFile);
-		mockery.registerMock('gulp', gulp);
-		mockery.registerMock('karma', karma);
-
-		// We need to delay requiring `registerTasks` until mockery has already been
-		// enabled and prepared.
-		registerTestTasks = require('../../../lib/tasks/test');
+		registerTestTasks.__set__('openFile', openFile);
 	});
 
 	beforeEach(function() {
@@ -37,10 +24,6 @@ describe('Test Tasks', function() {
 
 	afterEach(function() {
 		karma.server.start.restore();
-	});
-
-	after(function() {
-		mockery.disable();
 	});
 
 	it('should run unit tests', function(done) {
