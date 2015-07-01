@@ -10,7 +10,6 @@ var rewire = require('rewire');
 
 var registerAmdTasks = rewire('../../../lib/tasks/amd');
 var renameAlias = rewire('../../../lib/renameAlias');
-var restoreHandlers = [];
 
 describe('AMD Build Task', function() {
 	before(function() {
@@ -21,11 +20,9 @@ describe('AMD Build Task', function() {
 			return path.resolve('bower_components');
 		}
 
-		restoreHandlers.push(
-			renameAlias.__set__('getBowerDir',  getBowerDir),
-			registerAmdTasks.__set__('getBowerDir',  getBowerDir),
-			registerAmdTasks.__set__('renameAlias',  renameAlias)
-		);
+		renameAlias.__set__('getBowerDir',  getBowerDir);
+		registerAmdTasks.__set__('getBowerDir',  getBowerDir);
+		registerAmdTasks.__set__('renameAlias',  renameAlias);
 
 		registerSoyTasks();
 	});
@@ -36,9 +33,6 @@ describe('AMD Build Task', function() {
 
 	after(function() {
 		process.chdir(this.initialCwd_);
-		restoreHandlers.forEach(function(handler) {
-			handler();
-		});
 	});
 
 	it('should output source files and their dependencies as amd modules', function(done) {
