@@ -14,7 +14,7 @@ var registerTasks = rewire('../../../lib/tasks/index');
 describe('Index Tasks', function() {
 	before(function() {
 		this.initialCwd_ = process.cwd();
-		process.chdir(path.resolve(__dirname, '../assets'));
+		process.chdir(path.resolve(__dirname, '../../assets'));
 	});
 
 	beforeEach(function(done) {

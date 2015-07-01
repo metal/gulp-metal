@@ -10,7 +10,7 @@ var sinon = require('sinon');
 describe('CSS Task', function() {
 	before(function() {
 		this.initialCwd_ = process.cwd();
-		process.chdir(path.resolve(__dirname, '../assets'));
+		process.chdir(path.resolve(__dirname, '../../assets'));
 	});
 
 	after(function() {

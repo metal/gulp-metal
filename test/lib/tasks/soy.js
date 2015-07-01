@@ -13,7 +13,7 @@ global.Templates = {};
 describe('Soy Task', function() {
 	before(function() {
 		this.initialCwd_ = process.cwd();
-		process.chdir(path.resolve(__dirname, '../assets'));
+		process.chdir(path.resolve(__dirname, '../../assets'));
 	});
 
 	beforeEach(function() {

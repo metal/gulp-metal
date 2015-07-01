@@ -18,7 +18,7 @@
     "lib/**/*.tmpl"
   ],
   "scripts": {
-    "lint": "jshint index.js lib/*.js lib/tasks/*.js test/lib/*.js test/lib/tasks/*.js",
+    "lint": "jshint index.js lib/*.js lib/tasks/*.js test/lib/*.js test/lib/**/*.js",
     "test": "mocha test/lib/*.js test/lib/tasks/*.js --slow 1000 --timeout 3000"
   },
   "keywords": [

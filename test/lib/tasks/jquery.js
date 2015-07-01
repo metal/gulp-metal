@@ -12,7 +12,7 @@ var sinon = require('sinon');
 describe('jQuery Build Tasks', function() {
 	before(function() {
 		this.initialCwd_ = process.cwd();
-		process.chdir(path.resolve(__dirname, '../assets'));
+		process.chdir(path.resolve(__dirname, '../../assets'));
 
 		registerSoyTasks();
 	});
