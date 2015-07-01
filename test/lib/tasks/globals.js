@@ -89,6 +89,18 @@ describe('Global Build Tasks', function() {
 		});
 	});
 
+	it('should output source file of the globals bundle', function(done) {
+		registerGlobalTasks({
+			bundleFileName: 'foo.js',
+			globalName: 'foo'
+		});
+
+		gulp.start('build:globals', function() {
+			assert.ok(fs.existsSync('build/globals/foo.js.map'));
+			done();
+		});
+	});
+
 	it('should trigger "end" event even when build:globals throws error for invalid js', function(done) {
 		registerGlobalTasks({
 			buildSrc: 'invalidSrc/Invalid.js',

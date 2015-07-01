@@ -1,13 +1,19 @@
 'use strict';
 
 var assert = require('assert');
-var bowerDirectory = require('bower-directory');
 var path = require('path');
-var renameAlias = require('../../lib/renameAlias');
+var rewire = require('rewire');
 
-var bowerDir = bowerDirectory.sync();
+var renameAlias = rewire('../../lib/renameAlias');
+var bowerDir = 'bower/dir';
 
 describe('renameAlias', function() {
+	before(function() {
+		renameAlias.__set__('getBowerDir', function() {
+			return bowerDir;
+		});
+	});
+
 	it('should rename paths with "bower:" prefix to be relative to bower_components', function() {
 		var parentPath = path.resolve('assets/src/metal-modal/modal.js');
 		var renamedPath = renameAlias('bower:metal-tooltip/tooltip', parentPath);

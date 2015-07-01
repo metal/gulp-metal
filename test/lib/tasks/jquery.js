@@ -81,6 +81,18 @@ describe('jQuery Build Tasks', function() {
 			});
 		});
 
+		it('should output source file of the jquery globals bundle', function(done) {
+			registerJQueryTasks({
+				bundleFileName: 'foo.js',
+				globalName: 'foo'
+			});
+
+			gulp.start('build:globals:jquery', function() {
+				assert.ok(fs.existsSync('build/globals-jquery/foo.js.map'));
+				done();
+			});
+		});
+
 		it('should trigger "end" event even when build:globals:jquery throws error for invalid js', function(done) {
 			registerJQueryTasks({
 				buildSrc: 'invalidSrc/Invalid.js',
@@ -135,7 +147,7 @@ describe('jQuery Build Tasks', function() {
 			});
 		});
 
-		it('should output minified version of the jquery globals bundle', function(done) {
+		it('should output minified version of the jquery bundle', function(done) {
 			registerJQueryTasks({
 				bundleFileName: 'foo.js',
 				globalName: 'foo'
@@ -143,6 +155,18 @@ describe('jQuery Build Tasks', function() {
 
 			gulp.start('build:jquery', function() {
 				assert.ok(fs.existsSync('build/jquery/foo-min.js'));
+				done();
+			});
+		});
+
+		it('should output source file of the jquery bundle', function(done) {
+			registerJQueryTasks({
+				bundleFileName: 'foo.js',
+				globalName: 'foo'
+			});
+
+			gulp.start('build:jquery', function() {
+				assert.ok(fs.existsSync('build/jquery/foo.js.map'));
 				done();
 			});
 		});
