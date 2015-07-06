@@ -1,10 +1,12 @@
 'use strict';
 
 var assert = require('assert');
+var del = require('del');
 var fs = require('fs');
 var gulp = require('gulp');
 var path = require('path');
 var registerTasks = require('../../../lib/tasks/index');
+var soyPipelines = require('../../../lib/pipelines/soy');
 var sinon = require('sinon');
 require('../../fixture/soyutils-mock');
 
@@ -18,6 +20,7 @@ describe('Soy Task', function() {
 
 	beforeEach(function() {
 		Templates = {};
+		soyPipelines.reset();
 	});
 
 	after(function() {
@@ -160,6 +163,32 @@ describe('Soy Task', function() {
 			var contents = fs.readFileSync('soy/simple.soy.js', 'utf8');
 			assert.strictEqual(-1, contents.indexOf('import ComponentRegistry from \'bower:metal/src/component/ComponentRegistry\';'));
 			assert.notStrictEqual(-1, contents.indexOf('import ComponentRegistry from \'fn/path/component/ComponentRegistry\';'));
+			done();
+		});
+	});
+
+	it('should generate missing js component file when "soyShouldGenerateJsComponent" is set to true', function(done) {
+		registerTasks({
+			soyDest: 'soy',
+			soyShouldGenerateJsComponent: true,
+			soySrc: 'soy/simple.soy'
+		});
+
+		gulp.start('soy', function() {
+			var contents = fs.readFileSync('soy/simple.js', 'utf8');
+			assert.notStrictEqual(-1, contents.indexOf('class Simple extends SoyComponent'));
+			del('soy/simple.js', done);
+		});
+	});
+
+	it('should not generate missing js component file when "soyShouldGenerateJsComponent" is not set to true', function(done) {
+		registerTasks({
+			soyDest: 'soy',
+			soySrc: 'soy/simple.soy'
+		});
+
+		gulp.start('soy', function() {
+			assert.ok(!fs.existsSync('soy/simple.js'));
 			done();
 		});
 	});
