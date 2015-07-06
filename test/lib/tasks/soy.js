@@ -71,6 +71,22 @@ describe('Soy Task', function() {
 		});
 	});
 
+	it('should not generate deltemplate for private templates', function(done) {
+		registerTasks({
+			soyDest: 'soy',
+			soySrc: ['soy/privateTemplate.soy']
+		});
+
+		gulp.start('soy', function() {
+			loadSoyFile('soy/privateTemplate.soy.js');
+
+			assert.ok(!soy.$$getDelegateFn('PrivateTemplate.hello', ''));
+			assert.ok(!soy.$$getDelegateFn('PrivateTemplate.hello', 'element'));
+
+			done();
+		});
+	});
+
 	it('should set the "params" variable for each template, with a list of its param names', function(done) {
 		registerTasks({
 			soyDest: 'soy',
