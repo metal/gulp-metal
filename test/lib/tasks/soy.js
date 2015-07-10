@@ -27,69 +27,6 @@ describe('Soy Task', function() {
 		process.chdir(this.initialCwd_);
 	});
 
-	it('should generate extra templates', function(done) {
-		registerTasks({
-			soyDest: 'soy',
-			soySrc: ['soy/simple.soy']
-		});
-
-		gulp.start('soy', function() {
-			loadSoyFile('soy/simple.soy.js');
-
-			assert.ok(Templates.Simple);
-			assert.ok(Templates.Simple.content);
-			assert.ok(Templates.Simple.hello);
-
-			assert.ok(soy.$$getDelegateFn('Simple', ''));
-			assert.ok(soy.$$getDelegateFn('Simple', 'element'));
-			assert.ok(soy.$$getDelegateFn('Simple.hello', ''));
-			assert.ok(soy.$$getDelegateFn('Simple.hello', 'element'));
-
-			done();
-		});
-	});
-
-	it('should not generate deltemplate for the main and surface elements if one already exists', function(done) {
-		registerTasks({
-			soyDest: 'soy',
-			soySrc: ['soy/definedElement.soy']
-		});
-
-		gulp.start('soy', function() {
-			loadSoyFile('soy/definedElement.soy.js');
-
-			var templateFn = soy.$$getDelegateFn('DefinedElement.hello', 'element');
-			assert.ok(templateFn);
-			assert.notStrictEqual(-1, templateFn({
-				id: 'id'
-			}).indexOf('<button'));
-
-			templateFn = soy.$$getDelegateFn('DefinedElement', 'element');
-			assert.ok(templateFn);
-			assert.notStrictEqual(-1, templateFn({
-				id: 'id'
-			}).indexOf('<button'));
-
-			done();
-		});
-	});
-
-	it('should not generate deltemplate for private templates', function(done) {
-		registerTasks({
-			soyDest: 'soy',
-			soySrc: ['soy/privateTemplate.soy']
-		});
-
-		gulp.start('soy', function() {
-			loadSoyFile('soy/privateTemplate.soy.js');
-
-			assert.ok(!soy.$$getDelegateFn('PrivateTemplate.hello', ''));
-			assert.ok(!soy.$$getDelegateFn('PrivateTemplate.hello', 'element'));
-
-			done();
-		});
-	});
-
 	it('should set the "params" variable for each template, with a list of its param names', function(done) {
 		registerTasks({
 			soyDest: 'soy',
@@ -102,6 +39,19 @@ describe('Soy Task', function() {
 			assert.ok(Templates.Simple.hello.params);
 			assert.deepEqual(['firstName', 'lastName'], Templates.Simple.hello.params);
 
+			done();
+		});
+	});
+
+	it('should not set the "params" variable for private templates', function(done) {
+		registerTasks({
+			soyDest: 'soy',
+			soySrc: ['soy/privateTemplate.soy']
+		});
+
+		gulp.start('soy', function() {
+			loadSoyFile('soy/privateTemplate.soy.js');
+			assert.ok(!Templates.PrivateTemplate.hello.params);
 			done();
 		});
 	});
