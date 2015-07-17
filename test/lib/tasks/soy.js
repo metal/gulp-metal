@@ -37,13 +37,14 @@ describe('Soy Task', function() {
 			loadSoyFile('soy/simple.soy.js');
 
 			assert.ok(Templates.Simple.hello.params);
+			assert.ok(!Templates.Simple.hello.private);
 			assert.deepEqual(['firstName', 'lastName'], Templates.Simple.hello.params);
 
 			done();
 		});
 	});
 
-	it('should not set the "params" variable for private templates', function(done) {
+	it('should set the "private" variable to true for private templates', function(done) {
 		registerTasks({
 			soyDest: 'soy',
 			soySrc: ['soy/privateTemplate.soy']
@@ -51,6 +52,11 @@ describe('Soy Task', function() {
 
 		gulp.start('soy', function() {
 			loadSoyFile('soy/privateTemplate.soy.js');
+
+			assert.ok(!Templates.PrivateTemplate.content.private);
+			assert.ok(Templates.PrivateTemplate.content.params);
+
+			assert.ok(Templates.PrivateTemplate.hello.private);
 			assert.ok(!Templates.PrivateTemplate.hello.params);
 			done();
 		});
