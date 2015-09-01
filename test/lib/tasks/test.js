@@ -2,10 +2,10 @@
 
 var assert = require('assert');
 var gulp = require('gulp');
-var karma = require('karma');
 var rewire = require('rewire');
 var sinon = require('sinon');
 
+var karmaStub = {};
 var openFile = sinon.stub();
 var registerTestTasks = rewire('../../../lib/tasks/test');
 
@@ -16,24 +16,32 @@ describe('Test Tasks', function() {
 		});
 
 		registerTestTasks.__set__('openFile', openFile);
+		registerTestTasks.__set__('karma', karmaStub);
 	});
 
 	beforeEach(function() {
-		sinon.stub(karma.server, 'start').callsArg(1);
+		karmaStub.Server = function(config, callback) {
+			return {
+				start: function() {
+					callback();
+				}
+			};
+		};
+		sinon.spy(karmaStub, 'Server');
 		openFile.callCount = 0;
 	});
 
 	afterEach(function() {
-		karma.server.start.restore();
+		karmaStub.Server.restore();
 	});
 
 	it('should run unit tests', function(done) {
 		registerTestTasks();
 
 		gulp.start('test', function() {
-			assert.strictEqual(1, karma.server.start.callCount);
+			assert.strictEqual(1, karmaStub.Server.callCount);
 
-			var config = karma.server.start.args[0][0];
+			var config = karmaStub.Server.args[0][0];
 			assert.strictEqual(2, Object.keys(config).length);
 			assert.ok(config.configFile);
 			assert.notStrictEqual(-1, config.configFile.indexOf('karma.conf.js'));
@@ -46,9 +54,9 @@ describe('Test Tasks', function() {
 		registerTestTasks();
 
 		gulp.start('test:coverage', function() {
-			assert.strictEqual(1, karma.server.start.callCount);
+			assert.strictEqual(1, karmaStub.Server.callCount);
 
-			var config = karma.server.start.args[0][0];
+			var config = karmaStub.Server.args[0][0];
 			assert.strictEqual(2, Object.keys(config).length);
 			assert.ok(config.configFile);
 			assert.notStrictEqual(-1, config.configFile.indexOf('karma-coverage.conf.js'));
@@ -62,9 +70,9 @@ describe('Test Tasks', function() {
 
 		assert.strictEqual(0, openFile.callCount);
 		gulp.start('test:coverage:open', function() {
-			assert.strictEqual(1, karma.server.start.callCount);
+			assert.strictEqual(1, karmaStub.Server.callCount);
 
-			var config = karma.server.start.args[0][0];
+			var config = karmaStub.Server.args[0][0];
 			assert.strictEqual(2, Object.keys(config).length);
 			assert.ok(config.configFile);
 			assert.notStrictEqual(-1, config.configFile.indexOf('karma-coverage.conf.js'));
@@ -79,9 +87,9 @@ describe('Test Tasks', function() {
 		registerTestTasks();
 
 		gulp.start('test:browsers', function() {
-			assert.strictEqual(1, karma.server.start.callCount);
+			assert.strictEqual(1, karmaStub.Server.callCount);
 
-			var config = karma.server.start.args[0][0];
+			var config = karmaStub.Server.args[0][0];
 			assert.strictEqual(3, Object.keys(config).length);
 			assert.ok(config.configFile);
 			assert.ok(config.singleRun);
@@ -94,9 +102,9 @@ describe('Test Tasks', function() {
 		registerTestTasks();
 
 		gulp.start('test:saucelabs', function() {
-			assert.strictEqual(1, karma.server.start.callCount);
+			assert.strictEqual(1, karmaStub.Server.callCount);
 
-			var config = karma.server.start.args[0][0];
+			var config = karmaStub.Server.args[0][0];
 			assert.ok(config.configFile);
 			assert.ok(config.singleRun);
 			assert.ok(config.browsers);
@@ -109,9 +117,9 @@ describe('Test Tasks', function() {
 		registerTestTasks();
 
 		gulp.start('test:watch', function() {
-			assert.strictEqual(1, karma.server.start.callCount);
+			assert.strictEqual(1, karmaStub.Server.callCount);
 
-			var config = karma.server.start.args[0][0];
+			var config = karmaStub.Server.args[0][0];
 			assert.strictEqual(2, Object.keys(config).length);
 			assert.ok(config.configFile);
 			assert.ok(!config.singleRun);
@@ -146,21 +154,21 @@ describe('Test Tasks', function() {
 
 		it('should use task prefix for "test" task when it\'s defined', function(done) {
 			gulp.start('myPrefix:test', function() {
-				assert.strictEqual(1, karma.server.start.callCount);
+				assert.strictEqual(1, karmaStub.Server.callCount);
 				done();
 			});
 		});
 
 		it('should use task prefix for "test:coverage" task when it\'s defined', function(done) {
 			gulp.start('myPrefix:test:coverage', function() {
-				assert.strictEqual(1, karma.server.start.callCount);
+				assert.strictEqual(1, karmaStub.Server.callCount);
 				done();
 			});
 		});
 
 		it('should use task prefix for "test:coverage:open" task when it\'s defined', function(done) {
 			gulp.start('myPrefix:test:coverage:open', function() {
-				assert.strictEqual(1, karma.server.start.callCount);
+				assert.strictEqual(1, karmaStub.Server.callCount);
 				assert.strictEqual(1, openFile.callCount);
 				done();
 			});
@@ -168,21 +176,21 @@ describe('Test Tasks', function() {
 
 		it('should use task prefix for "test:browsers" task when it\'s defined', function(done) {
 			gulp.start('myPrefix:test:browsers', function() {
-				assert.strictEqual(1, karma.server.start.callCount);
+				assert.strictEqual(1, karmaStub.Server.callCount);
 				done();
 			});
 		});
 
 		it('should use task prefix for "test:saucelabs" task when it\'s defined', function(done) {
 			gulp.start('myPrefix:test:saucelabs', function() {
-				assert.strictEqual(1, karma.server.start.callCount);
+				assert.strictEqual(1, karmaStub.Server.callCount);
 				done();
 			});
 		});
 
 		it('should use task prefix for "test:watch" task when it\'s defined', function(done) {
 			gulp.start('myPrefix:test:watch', function() {
-				assert.strictEqual(1, karma.server.start.callCount);
+				assert.strictEqual(1, karmaStub.Server.callCount);
 				done();
 			});
 		});

@@ -46,7 +46,7 @@
     "gulp-util": "^3.0.6",
     "gulp-wrapper": "^1.0.0",
     "jshint-stylish": "^2.0.0",
-    "karma": "^0.12.31",
+    "karma": "^0.13.9",
     "merge": "^1.2.0",
     "open": "0.0.5",
     "run-sequence": "^1.1.0",
