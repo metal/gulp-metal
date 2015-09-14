@@ -50,7 +50,7 @@
     "merge": "^1.2.0",
     "open": "0.0.5",
     "run-sequence": "^1.1.0",
-    "soyparser": "0.2.1",
+    "soyparser": "^0.2.2",
     "stream-combiner": "^0.2.2",
     "through2": "^0.6.5"
   },

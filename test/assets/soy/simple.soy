@@ -8,8 +8,8 @@
 
 /**
  * @param firstName
- * @param lastName
+ * @param? lastName
  */
 {template .hello}
-	Hello {$firstName} {$lastName}!
+	Hello {$firstName}{if $lastName} {$lastName}{/if}!
 {/template}

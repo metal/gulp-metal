@@ -62,22 +62,6 @@ describe('Soy Task', function() {
 		});
 	});
 
-	it('should not add optional params to the "params" variable', function(done) {
-		registerTasks({
-			soyDest: 'soy',
-			soySrc: ['soy/optionalParam.soy']
-		});
-
-		gulp.start('soy', function() {
-			loadSoyFile('soy/optionalParam.soy.js');
-
-			assert.ok(Templates.OptionalParam.hello.params);
-			assert.deepEqual(['firstName'], Templates.OptionalParam.hello.params);
-
-			done();
-		});
-	});
-
 	it('should add lines to generated soy js file that import ComponentRegistry', function(done) {
 		registerTasks({
 			soyDest: 'soy',
