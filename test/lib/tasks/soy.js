@@ -62,6 +62,22 @@ describe('Soy Task', function() {
 		});
 	});
 
+	it('should not add params listed in "skipUpdates" to the "params" variable', function(done) {
+		registerTasks({
+			soyDest: 'soy',
+			soySrc: ['soy/skipUpdates.soy']
+		});
+
+		gulp.start('soy', function() {
+			loadSoyFile('soy/skipUpdates.soy.js');
+
+			assert.ok(Templates.SkipUpdates.hello.params);
+			assert.deepEqual(['foobar'], Templates.SkipUpdates.hello.params);
+
+			done();
+		});
+	});
+
 	it('should add lines to generated soy js file that import ComponentRegistry', function(done) {
 		registerTasks({
 			soyDest: 'soy',
