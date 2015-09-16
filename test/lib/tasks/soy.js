@@ -91,6 +91,21 @@ describe('Soy Task', function() {
 		});
 	});
 
+	it('should normalize the path that imports ComponentRegistry', function(done) {
+		registerTasks({
+			corePathFromSoy: 'some\\path',
+			soyDest: 'soy',
+			soySrc: ['soy/simple.soy']
+		});
+
+		gulp.start('soy', function() {
+			var contents = fs.readFileSync('soy/simple.soy.js', 'utf8');
+			assert.strictEqual(-1, contents.indexOf('import ComponentRegistry from \'some\\path/component/ComponentRegistry\';'));
+			assert.notStrictEqual(-1, contents.indexOf('import ComponentRegistry from \'some/path/component/ComponentRegistry\';'));
+			done();
+		});
+	});
+
 	it('should import ComponentRegistry according to core path indicated by the corePathFromSoy option', function(done) {
 		registerTasks({
 			corePathFromSoy: 'some/path',
