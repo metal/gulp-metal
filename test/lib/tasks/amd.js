@@ -67,6 +67,22 @@ describe('AMD Build Task', function() {
 		});
 	});
 
+	it('should normalize module dependencies path', function(done) {
+		var options = {
+			moduleName: 'foo\\bar'
+		};
+		registerAmdTasks(options);
+		registerSoyTasks(options);
+
+		gulp.start('build:amd', function() {
+			assert.ok(fs.existsSync('build/amd/foo/bar/src/Foo.js'));
+
+			var contents = fs.readFileSync('build/amd/foo/bar/src/Foo.js', 'utf8');
+			assert.notStrictEqual(-1, contents.indexOf('\'foo/bar/src/Bar\''));
+			done();
+		});
+	});
+
 	describe('jQuery', function() {
 		beforeEach(function(done) {
 			del('build/amd-jquery', done);
