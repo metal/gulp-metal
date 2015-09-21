@@ -7,6 +7,7 @@ var gulp = require('gulp');
 var path = require('path');
 var registerAmdTasks = require('../../../lib/tasks/amd');
 var registerSoyTasks = require('../../../lib/tasks/soy');
+var sinon = require('sinon');
 
 describe('AMD Build Task', function() {
 	before(function() {
@@ -47,6 +48,25 @@ describe('AMD Build Task', function() {
 			assert.ok(!fs.existsSync('build/amd/foo/src/Foo.js'));
 			assert.ok(fs.existsSync('build/amd/foo/src/Bar.js'));
 			assert.ok(!fs.existsSync('build/amd/dep/src/core.js'));
+			done();
+		});
+	});
+
+	it('should use given path as module id if it\'s prefixed with "module:"', function(done) {
+		registerAmdTasks({
+			buildSrc: 'amd/moduleAlias.js',
+			moduleName: 'moduleAlias'
+		});
+		sinon.stub(console, 'warn');
+
+		gulp.start('build:amd', function() {
+			var modulePath = 'build/amd/moduleAlias/amd/moduleAlias.js';
+			assert.ok(fs.existsSync(modulePath));
+
+			var contents = fs.readFileSync(modulePath, 'utf8');
+			assert.notStrictEqual(-1, contents.indexOf('define([\'exports\', \'myModuleId\']'));
+
+			console.warn.restore();
 			done();
 		});
 	});
