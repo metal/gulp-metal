@@ -13,11 +13,11 @@ describe('Global Build Tasks', function() {
 	before(function() {
 		this.initialCwd_ = process.cwd();
 		process.chdir(path.resolve(__dirname, '../../assets'));
-
-		registerSoyTasks();
 	});
 
 	beforeEach(function(done) {
+		gulp.reset();
+		registerSoyTasks();
 		del('build/globals', done);
 	});
 
@@ -48,11 +48,13 @@ describe('Global Build Tasks', function() {
 	});
 
 	it('should use task prefix when it\'s defined', function(done) {
-		registerGlobalTasks({
+		var options = {
 			bundleFileName: 'foo.js',
 			globalName: 'foo',
 			taskPrefix: 'myPrefix:'
-		});
+		};
+		registerGlobalTasks(options);
+		registerSoyTasks(options);
 
 		gulp.start('myPrefix:build:globals', function() {
 			var contents = fs.readFileSync('build/globals/foo.js', 'utf8');

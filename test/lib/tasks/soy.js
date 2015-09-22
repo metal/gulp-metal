@@ -19,6 +19,7 @@ describe('Soy Task', function() {
 	});
 
 	beforeEach(function() {
+		gulp.reset();
 		Templates = {};
 		soyPipelines.reset();
 	});

@@ -11,15 +11,16 @@ var registerTestTasks = rewire('../../../lib/tasks/test');
 
 describe('Test Tasks', function() {
 	before(function() {
-		gulp.task('soy', function(done) {
-			done();
-		});
-
 		registerTestTasks.__set__('openFile', openFile);
 		registerTestTasks.__set__('karma', karmaStub);
 	});
 
 	beforeEach(function() {
+		gulp.reset();
+		gulp.task('soy', function(done) {
+			done();
+		});
+
 		karmaStub.Server = function(config, callback) {
 			return {
 				start: function() {
@@ -142,7 +143,7 @@ describe('Test Tasks', function() {
 	});
 
 	describe('Task Prefix', function() {
-		before(function() {
+		beforeEach(function() {
 			registerTestTasks({
 				taskPrefix: 'myPrefix:'
 			});

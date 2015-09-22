@@ -13,11 +13,11 @@ describe('AMD Build Task', function() {
 	before(function() {
 		this.initialCwd_ = process.cwd();
 		process.chdir(path.resolve(__dirname, '../../assets'));
-
-		registerSoyTasks();
 	});
 
 	beforeEach(function(done) {
+		gulp.reset();
+		registerSoyTasks();
 		del('build/amd', done);
 	});
 

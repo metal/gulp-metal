@@ -13,6 +13,10 @@ describe('CSS Task', function() {
 		process.chdir(path.resolve(__dirname, '../../assets'));
 	});
 
+	beforeEach(function() {
+		gulp.reset();
+	});
+
 	after(function() {
 		process.chdir(this.initialCwd_);
 	});
