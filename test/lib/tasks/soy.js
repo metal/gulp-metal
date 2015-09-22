@@ -63,7 +63,7 @@ describe('Soy Task', function() {
 		});
 	});
 
-	it('should set the "static" variable to true for private templates', function(done) {
+	it('should set the "static" variable to true for templates with the @static doc tag', function(done) {
 		registerTasks({
 			soyDest: 'soy',
 			soySrc: ['soy/static.soy']
@@ -71,8 +71,10 @@ describe('Soy Task', function() {
 
 		gulp.start('soy', function() {
 			loadSoyFile('soy/static.soy.js');
+
 			assert.ok(!Templates.Static.content.static);
 			assert.ok(Templates.Static.hello.static);
+
 			done();
 		});
 	});
