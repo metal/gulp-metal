@@ -63,6 +63,20 @@ describe('Soy Task', function() {
 		});
 	});
 
+	it('should set the "static" variable to true for private templates', function(done) {
+		registerTasks({
+			soyDest: 'soy',
+			soySrc: ['soy/static.soy']
+		});
+
+		gulp.start('soy', function() {
+			loadSoyFile('soy/static.soy.js');
+			assert.ok(!Templates.Static.content.static);
+			assert.ok(Templates.Static.hello.static);
+			done();
+		});
+	});
+
 	it('should not add params listed in "skipUpdates" to the "params" variable', function(done) {
 		registerTasks({
 			soyDest: 'soy',
