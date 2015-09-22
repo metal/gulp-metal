@@ -106,7 +106,7 @@ describe('Index Tasks', function() {
 		it('should use task prefix when it\'s defined', function(done) {
 			registerTasks({
 				buildSrc: 'src/Bar.js',
-				testPrefix: 'myPrefix:'
+				taskPrefix: 'myPrefix:'
 			});
 
 			gulp.start('myPrefix:build', function() {
