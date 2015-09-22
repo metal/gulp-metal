@@ -21,6 +21,7 @@ describe('Index Tasks', function() {
 		del('build', function() {
 			fs.mkdirSync('build');
 			fs.writeFileSync('build/temp.js', 'var a = 2;');
+			gulp.reset();
 			done();
 		});
 	});
@@ -162,7 +163,7 @@ describe('Index Tasks', function() {
 		it('should use task prefix when it\'s defined', function(done) {
 			registerTasks({
 				buildSrc: 'src/Bar.js',
-				testPrefix: 'myPrefix:'
+				taskPrefix: 'myPrefix:'
 			});
 
 			gulp.start('myPrefix:build:js', function() {
@@ -217,7 +218,7 @@ describe('Index Tasks', function() {
 		it('should use task prefix when it\'s defined', function(done) {
 			registerTasks({
 				buildSrc: 'src/Bar.js',
-				testPrefix: 'myPrefix:'
+				taskPrefix: 'myPrefix:'
 			});
 
 			gulp.start('myPrefix:build:all', function() {
@@ -262,7 +263,7 @@ describe('Index Tasks', function() {
 		it('should use task prefix when it\'s defined', function(done) {
 			registerTasks({
 				buildSrc: 'src/Bar.js',
-				testPrefix: 'myPrefix:'
+				taskPrefix: 'myPrefix:'
 			});
 
 			gulp.start('myPrefix:build:all:js', function() {
