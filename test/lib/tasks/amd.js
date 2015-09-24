@@ -38,6 +38,19 @@ describe('AMD Build Task', function() {
 		});
 	});
 
+	it('should output a source map file for each amd module', function(done) {
+		registerAmdTasks({
+			moduleName: 'foo'
+		});
+
+		gulp.start('build:amd', function() {
+			assert.ok(fs.existsSync('build/amd/foo/src/Foo.js.map'));
+			assert.ok(fs.existsSync('build/amd/foo/src/Bar.js.map'));
+			assert.ok(fs.existsSync('build/amd/dep/src/core.js.map'));
+			done();
+		});
+	});
+
 	it('should look for source files according to the value of the "buildSrc" option', function(done) {
 		registerAmdTasks({
 			buildSrc: 'src/Bar.js',
@@ -120,6 +133,19 @@ describe('AMD Build Task', function() {
 
 				var contents = fs.readFileSync('build/amd-jquery/foo/src/Foo.js', 'utf8');
 				assert.notStrictEqual(-1, contents.indexOf('JQueryAdapter[\'default\'].register(\'foo\', Foo)'));
+				done();
+			});
+		});
+
+		it('should output a source map file for each amd module', function(done) {
+			registerAmdTasks({
+				moduleName: 'foo'
+			});
+
+			gulp.start('build:amd:jquery', function() {
+				assert.ok(fs.existsSync('build/amd-jquery/foo/src/Foo.js.map'));
+				assert.ok(fs.existsSync('build/amd-jquery/foo/src/Bar.js.map'));
+				assert.ok(fs.existsSync('build/amd-jquery/dep/src/core.js.map'));
 				done();
 			});
 		});
