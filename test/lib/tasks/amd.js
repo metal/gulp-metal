@@ -44,8 +44,19 @@ describe('AMD Build Task', function() {
 		});
 
 		gulp.start('build:amd', function() {
+			var contents = fs.readFileSync('build/amd/foo/src/Foo.js', 'utf8');
+			var url = contents.substr(contents.indexOf('//# sourceMappingURL=') + 21);
+			assert.strictEqual('Foo.js.map', url);
 			assert.ok(fs.existsSync('build/amd/foo/src/Foo.js.map'));
+
+			contents = fs.readFileSync('build/amd/foo/src/Bar.js', 'utf8');
+			url = contents.substr(contents.indexOf('//# sourceMappingURL=') + 21);
+			assert.strictEqual('Bar.js.map', url);
 			assert.ok(fs.existsSync('build/amd/foo/src/Bar.js.map'));
+
+			contents = fs.readFileSync('build/amd/dep/src/core.js', 'utf8');
+			url = contents.substr(contents.indexOf('//# sourceMappingURL=') + 21);
+			assert.strictEqual('core.js.map', url);
 			assert.ok(fs.existsSync('build/amd/dep/src/core.js.map'));
 			done();
 		});
