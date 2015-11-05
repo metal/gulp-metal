@@ -1,7 +1,6 @@
 'use strict';
 
 var assert = require('assert');
-var del = require('del');
 var fs = require('fs');
 var gulp = require('gulp');
 var path = require('path');
@@ -195,32 +194,6 @@ describe('Soy Task', function() {
 		gulp.start('soy', function() {
 			var contents = fs.readFileSync('soy/simple.soy.js', 'utf8');
 			assert.notStrictEqual(-1, contents.indexOf('SoyAop.registerTemplates(\'Simple\');'));
-			done();
-		});
-	});
-
-	it('should generate missing js component file when "soyShouldGenerateJsComponent" is set to true', function(done) {
-		registerTasks({
-			soyDest: 'soy',
-			soyShouldGenerateJsComponent: true,
-			soySrc: 'soy/simple.soy'
-		});
-
-		gulp.start('soy', function() {
-			var contents = fs.readFileSync('soy/simple.js', 'utf8');
-			assert.notStrictEqual(-1, contents.indexOf('class Simple extends SoyComponent'));
-			del('soy/simple.js', done);
-		});
-	});
-
-	it('should not generate missing js component file when "soyShouldGenerateJsComponent" is not set to true', function(done) {
-		registerTasks({
-			soyDest: 'soy',
-			soySrc: 'soy/simple.soy'
-		});
-
-		gulp.start('soy', function() {
-			assert.ok(!fs.existsSync('soy/simple.js'));
 			done();
 		});
 	});
