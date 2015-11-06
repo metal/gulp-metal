@@ -88,7 +88,7 @@ describe('AMD Build Task', function() {
 			assert.ok(fs.existsSync(modulePath));
 
 			var contents = fs.readFileSync(modulePath, 'utf8');
-			assert.notStrictEqual(-1, contents.indexOf('define([\'exports\', \'myModuleId\']'));
+			assert.notStrictEqual(-1, contents.indexOf('define([\'myModuleId\']'));
 
 			console.warn.restore();
 			done();
@@ -143,7 +143,7 @@ describe('AMD Build Task', function() {
 				assert.ok(fs.existsSync('build/amd-jquery/dep/src/core.js'));
 
 				var contents = fs.readFileSync('build/amd-jquery/foo/src/Foo.js', 'utf8');
-				assert.notStrictEqual(-1, contents.indexOf('JQueryAdapter[\'default\'].register(\'foo\', Foo)'));
+				assert.notStrictEqual(-1, contents.indexOf('_JQueryAdapter2.default.register(\'foo\', Foo)'));
 				done();
 			});
 		});
@@ -175,7 +175,7 @@ describe('AMD Build Task', function() {
 				assert.ok(fs.existsSync('build/amd-jquery/dep/src/core.js'));
 
 				var contents = fs.readFileSync('build/amd-jquery/foo/src/Foo.js', 'utf8');
-				assert.notStrictEqual(-1, contents.indexOf('JQueryAdapter[\'default\'].register(\'foo\', Foo)'));
+				assert.notStrictEqual(-1, contents.indexOf('_JQueryAdapter2.default.register(\'foo\', Foo)'));
 				done();
 			});
 		});
