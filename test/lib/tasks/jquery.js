@@ -18,7 +18,9 @@ describe('jQuery Build Tasks', function() {
 	beforeEach(function(done) {
 		gulp.reset();
 		registerSoyTasks();
-		del('build/jquery', done);
+		del('build/jquery').then(function() {
+			done();
+		});
 	});
 
 	after(function() {

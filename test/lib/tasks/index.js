@@ -18,7 +18,7 @@ describe('Index Tasks', function() {
 	});
 
 	beforeEach(function(done) {
-		del('build', function() {
+		del('build').then(function() {
 			fs.mkdirSync('build');
 			fs.writeFileSync('build/temp.js', 'var a = 2;');
 			gulp.reset();

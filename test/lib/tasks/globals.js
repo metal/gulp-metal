@@ -18,7 +18,9 @@ describe('Global Build Tasks', function() {
 	beforeEach(function(done) {
 		gulp.reset();
 		registerSoyTasks();
-		del('build/globals', done);
+		del('build/globals').then(function() {
+			done();
+		});
 	});
 
 	after(function() {
@@ -110,7 +112,9 @@ describe('Global Build Tasks', function() {
 
 	describe('jQuery', function() {
 		beforeEach(function(done) {
-			del('build/globals-jquery', done);
+			del('build/globals-jquery').then(function() {
+				done();
+			});
 		});
 
 		it('should build js files into a single bundle with globals', function(done) {

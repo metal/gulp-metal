@@ -18,7 +18,9 @@ describe('AMD Build Task', function() {
 	beforeEach(function(done) {
 		gulp.reset();
 		registerSoyTasks();
-		del('build/amd', done);
+		del('build/amd').then(function() {
+			done();
+		});
 	});
 
 	after(function() {
@@ -129,7 +131,9 @@ describe('AMD Build Task', function() {
 
 	describe('jQuery', function() {
 		beforeEach(function(done) {
-			del('build/amd-jquery', done);
+			del('build/amd-jquery').then(function() {
+				done();
+			});
 		});
 
 		it('should output source files and their dependencies as amd modules with jquery', function(done) {
