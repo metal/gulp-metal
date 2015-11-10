@@ -35,7 +35,7 @@
     "gulp-babel-deps": "^1.0.0",
     "gulp-babel-globals": "^1.0.0",
     "gulp-concat": "^2.5.2",
-    "gulp-esformatter": "^4.0.0",
+    "gulp-esformatter": "^5.0.0",
     "gulp-if": "^2.0.0",
     "gulp-ignore": "^2.0.1",
     "gulp-jshint": "^1.11.0",
