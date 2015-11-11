@@ -1,6 +1,7 @@
 'use strict';
 
 var assert = require('assert');
+var childProcess = require('child_process');
 var del = require('del');
 var fs = require('fs');
 var gulp = require('gulp');
@@ -381,6 +382,36 @@ describe('Index Tasks', function() {
 
 			gulp.start('myPrefix:lint', function() {
 				assert.strictEqual(1, stubs.jshint.callCount);
+				done();
+			});
+		});
+	});
+
+	describe('Docs', function() {
+		beforeEach(function() {
+			sinon.stub(childProcess, 'execFile');
+		});
+
+		afterEach(function() {
+			childProcess.execFile.restore();
+		});
+
+		it('should call jsdoc cli to generate docs', function(done) {
+			registerTasks();
+
+			gulp.start('docs', function() {
+				assert.strictEqual(1, childProcess.execFile.callCount);
+				done();
+			});
+		});
+
+		it('should use task prefix when it\'s defined', function(done) {
+			registerTasks({
+				taskPrefix: 'myPrefix:'
+			});
+
+			gulp.start('myPrefix:docs', function() {
+				assert.strictEqual(1, childProcess.execFile.callCount);
 				done();
 			});
 		});
