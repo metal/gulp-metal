@@ -6,6 +6,7 @@
 	"opts": {
 		"access": "undefined",
 		"destination": "./docs/",
-		"recurse": true
+		"recurse": true,
+		"readme": "./README.md"
 	}
 }
