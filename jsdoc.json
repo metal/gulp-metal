@@ -1,0 +1,11 @@
+{
+	"source": {
+		"excludePattern": ".soy.js$"
+	},
+	"plugins": ["plugins/markdown"],
+	"opts": {
+		"access": "undefined",
+		"destination": "./docs/",
+		"recurse": true
+	}
+}
