@@ -389,7 +389,7 @@ describe('Index Tasks', function() {
 
 	describe('Docs', function() {
 		beforeEach(function() {
-			sinon.stub(childProcess, 'execFile');
+			sinon.stub(childProcess, 'execFile').yields();
 		});
 
 		afterEach(function() {
