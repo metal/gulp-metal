@@ -83,7 +83,7 @@ describe('Global Build Tasks', function() {
 		});
 	});
 
-	it('should output source file of the globals bundle', function(done) {
+	it('should output source map file of the globals bundle', function(done) {
 		registerGlobalTasks({
 			bundleFileName: 'foo.js',
 			globalName: 'foo'
@@ -91,6 +91,33 @@ describe('Global Build Tasks', function() {
 
 		gulp.start('build:globals', function() {
 			assert.ok(fs.existsSync('build/globals/foo.js.map'));
+			done();
+		});
+	});
+
+	it('should add component registration calls', function(done) {
+		registerGlobalTasks({
+			bundleFileName: 'foo.js',
+			globalName: 'foo'
+		});
+
+		gulp.start('build:globals', function() {
+			var contents = fs.readFileSync('build/globals/foo.js', 'utf8');
+			assert.notStrictEqual(-1, contents.indexOf('Foo.prototype.registerMetalComponent'));
+			done();
+		});
+	});
+
+	it('should not add component registration calls if skipAutoComponentRegistration is set to true', function(done) {
+		registerGlobalTasks({
+			bundleFileName: 'foo.js',
+			globalName: 'foo',
+			skipAutoComponentRegistration: true
+		});
+
+		gulp.start('build:globals', function() {
+			var contents = fs.readFileSync('build/globals/foo.js', 'utf8');
+			assert.strictEqual(-1, contents.indexOf('Foo.prototype.registerMetalComponent'));
 			done();
 		});
 	});

@@ -97,6 +97,31 @@ describe('AMD Build Task', function() {
 		});
 	});
 
+	it('should add component registration calls', function(done) {
+		registerAmdTasks({
+			moduleName: 'foo'
+		});
+
+		gulp.start('build:amd', function() {
+			var contents = fs.readFileSync('build/amd/foo/src/Foo.js', 'utf8');
+			assert.notStrictEqual(-1, contents.indexOf('Foo.prototype.registerMetalComponent'));
+			done();
+		});
+	});
+
+	it('should not add component registration calls if skipAutoComponentRegistration is set to true', function(done) {
+		registerAmdTasks({
+			moduleName: 'foo',
+			skipAutoComponentRegistration: true
+		});
+
+		gulp.start('build:amd', function() {
+			var contents = fs.readFileSync('build/amd/foo/src/Foo.js', 'utf8');
+			assert.strictEqual(-1, contents.indexOf('Foo.prototype.registerMetalComponent'));
+			done();
+		});
+	});
+
 	it('should use task prefix when it\'s defined', function(done) {
 		var options = {
 			moduleName: 'foo',
