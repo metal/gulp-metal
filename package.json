@@ -44,6 +44,7 @@
     "gulp-jshint": "^1.11.0",
     "gulp-load-plugins": "^1.1.0",
     "gulp-rename": "^1.2.2",
+    "gulp-replace": "^0.5.4",
     "gulp-sass": "^2.0.1",
     "gulp-sourcemaps": "^1.5.2",
     "gulp-soynode": "^1.5.1",
