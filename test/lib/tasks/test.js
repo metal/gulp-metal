@@ -1,7 +1,9 @@
 'use strict';
 
 var assert = require('assert');
+var fs = require('fs');
 var gulp = require('gulp');
+var merge = require('merge');
 var rewire = require('rewire');
 var sinon = require('sinon');
 
@@ -28,6 +30,11 @@ describe('Test Tasks', function() {
 				}
 			};
 		};
+		karmaStub.Config = function() {
+			this.set = function(options) {
+				merge(this, options);
+			};
+		};
 		sinon.spy(karmaStub, 'Server');
 		openFile.callCount = 0;
 	});
@@ -43,25 +50,65 @@ describe('Test Tasks', function() {
 			assert.strictEqual(1, karmaStub.Server.callCount);
 
 			var config = karmaStub.Server.args[0][0];
-			assert.strictEqual(2, Object.keys(config).length);
+			assert.strictEqual(3, Object.keys(config).length);
 			assert.ok(config.configFile);
-			assert.notStrictEqual(-1, config.configFile.indexOf('karma.conf.js'));
+			assert.notStrictEqual(-1, config.configFile.indexOf('metal-karma-config'));
 			assert.ok(config.singleRun);
+			assert.strictEqual(process.cwd(), config.basePath);
 			done();
 		});
 	});
 
-	it('should run unit tests with the coverage karma config file when test:coverage is run', function(done) {
+	it('should run unit tests with karma.conf.js file', function(done) {
+		registerTestTasks();
+		sinon.stub(fs, 'existsSync').returns(true);
+
+		gulp.start('test', function() {
+			assert.strictEqual(1, karmaStub.Server.callCount);
+
+			var config = karmaStub.Server.args[0][0];
+			assert.strictEqual(3, Object.keys(config).length);
+			assert.ok(config.configFile);
+			assert.notStrictEqual(-1, config.configFile.indexOf('karma.conf.js'));
+			assert.ok(config.singleRun);
+			assert.strictEqual(process.cwd(), config.basePath);
+
+			fs.existsSync.restore();
+			done();
+		});
+	});
+
+	it('should run unit tests with the coverage karma config', function(done) {
 		registerTestTasks();
 
 		gulp.start('test:coverage', function() {
 			assert.strictEqual(1, karmaStub.Server.callCount);
 
 			var config = karmaStub.Server.args[0][0];
-			assert.strictEqual(2, Object.keys(config).length);
+			assert.strictEqual(3, Object.keys(config).length);
+			assert.ok(config.configFile);
+			assert.notStrictEqual(-1, config.configFile.indexOf('metal-karma-config/coverage'));
+			assert.ok(config.singleRun);
+			assert.strictEqual(process.cwd(), config.basePath);
+			done();
+		});
+	});
+
+	it('should run unit tests with the coverage karma config file', function(done) {
+		registerTestTasks();
+		sinon.stub(fs, 'existsSync').returns(true);
+
+		gulp.start('test:coverage', function() {
+			assert.strictEqual(1, karmaStub.Server.callCount);
+
+			var config = karmaStub.Server.args[0][0];
+			assert.strictEqual(3, Object.keys(config).length);
 			assert.ok(config.configFile);
 			assert.notStrictEqual(-1, config.configFile.indexOf('karma-coverage.conf.js'));
 			assert.ok(config.singleRun);
+			assert.strictEqual(process.cwd(), config.basePath);
+
+			fs.existsSync.restore();
 			done();
 		});
 	});
@@ -74,27 +121,28 @@ describe('Test Tasks', function() {
 			assert.strictEqual(1, karmaStub.Server.callCount);
 
 			var config = karmaStub.Server.args[0][0];
-			assert.strictEqual(2, Object.keys(config).length);
+			assert.strictEqual(3, Object.keys(config).length);
 			assert.ok(config.configFile);
-			assert.notStrictEqual(-1, config.configFile.indexOf('karma-coverage.conf.js'));
+			assert.notStrictEqual(-1, config.configFile.indexOf('metal-karma-config/coverage'));
 			assert.ok(config.singleRun);
+			assert.strictEqual(process.cwd(), config.basePath);
 
 			assert.strictEqual(1, openFile.callCount);
 			done();
 		});
 	});
 
-	it('should override browsers config when test:browsers is run', function(done) {
+	it('should override browsers and plugins config when test:browsers is run', function(done) {
 		registerTestTasks();
 
 		gulp.start('test:browsers', function() {
 			assert.strictEqual(1, karmaStub.Server.callCount);
 
 			var config = karmaStub.Server.args[0][0];
-			assert.strictEqual(3, Object.keys(config).length);
 			assert.ok(config.configFile);
 			assert.ok(config.singleRun);
 			assert.ok(config.browsers);
+			assert.ok(config.plugins.length > 3);
 			done();
 		});
 	});
@@ -109,6 +157,7 @@ describe('Test Tasks', function() {
 			assert.ok(config.configFile);
 			assert.ok(config.singleRun);
 			assert.ok(config.browsers);
+			assert.ok(config.plugins.length > 1);
 			assert.ok(config.sauceLabs);
 			done();
 		});
@@ -121,7 +170,6 @@ describe('Test Tasks', function() {
 			assert.strictEqual(1, karmaStub.Server.callCount);
 
 			var config = karmaStub.Server.args[0][0];
-			assert.strictEqual(2, Object.keys(config).length);
 			assert.ok(config.configFile);
 			assert.ok(!config.singleRun);
 			done();
