@@ -103,7 +103,6 @@ describe('Soy Task', function() {
 		gulp.start('soy', function() {
 			var contents = fs.readFileSync('soy/simple.soy.js', 'utf8');
 			assert.notStrictEqual(-1, contents.indexOf('import Component from \'bower:metal/src/component/Component\';'));
-			assert.notStrictEqual(-1, contents.indexOf('import ComponentRegistry from \'bower:metal/src/component/ComponentRegistry\';'));
 			assert.notStrictEqual(-1, contents.indexOf('import SoyAop from \'bower:metal/src/soy/SoyAop\';'));
 			assert.notStrictEqual(-1, contents.indexOf('import SoyRenderer from \'bower:metal/src/soy/SoyRenderer\';'));
 			assert.notStrictEqual(-1, contents.indexOf('import SoyTemplates from \'bower:metal/src/soy/SoyTemplates\';'));
@@ -120,8 +119,8 @@ describe('Soy Task', function() {
 
 		gulp.start('soy', function() {
 			var contents = fs.readFileSync('soy/simple.soy.js', 'utf8');
-			assert.strictEqual(-1, contents.indexOf('import ComponentRegistry from \'some\\path/component/ComponentRegistry\';'));
-			assert.notStrictEqual(-1, contents.indexOf('import ComponentRegistry from \'some/path/component/ComponentRegistry\';'));
+			assert.strictEqual(-1, contents.indexOf('import Component from \'some\\path/component/Component\';'));
+			assert.notStrictEqual(-1, contents.indexOf('import Component from \'some/path/component/Component\';'));
 			done();
 		});
 	});
@@ -135,8 +134,8 @@ describe('Soy Task', function() {
 
 		gulp.start('soy', function() {
 			var contents = fs.readFileSync('soy/simple.soy.js', 'utf8');
-			assert.strictEqual(-1, contents.indexOf('import ComponentRegistry from \'bower:metal/src/component/ComponentRegistry\';'));
-			assert.notStrictEqual(-1, contents.indexOf('import ComponentRegistry from \'some/path/component/ComponentRegistry\';'));
+			assert.strictEqual(-1, contents.indexOf('import Component from \'bower:metal/src/component/Component\';'));
+			assert.notStrictEqual(-1, contents.indexOf('import Component from \'some/path/component/Component\';'));
 			done();
 		});
 	});
@@ -152,8 +151,8 @@ describe('Soy Task', function() {
 
 		gulp.start('soy', function() {
 			var contents = fs.readFileSync('soy/simple.soy.js', 'utf8');
-			assert.strictEqual(-1, contents.indexOf('import ComponentRegistry from \'bower:metal/src/component/ComponentRegistry\';'));
-			assert.notStrictEqual(-1, contents.indexOf('import ComponentRegistry from \'fn/path/component/ComponentRegistry\';'));
+			assert.strictEqual(-1, contents.indexOf('import Component from \'bower:metal/src/component/Component\';'));
+			assert.notStrictEqual(-1, contents.indexOf('import Component from \'fn/path/component/Component\';'));
 			done();
 		});
 	});
@@ -235,10 +234,10 @@ function loadSoyFile(filePath) {
 	var contents = fs.readFileSync(filePath, 'utf8');
 	contents = contents.split('\n');
 	// Remove the first 8 lines, since they have ES6 import declarations.
-	contents.splice(0, 8);
+	contents.splice(0, 7);
 	// Remove the last 3 lines, since they have an ES6 class definition and an
 	// export declaration.
-	contents.splice(contents.length - 11, 11);
+	contents.splice(contents.length - 7, 7);
 	contents = contents.join('\n');
 	eval(contents);
 }
