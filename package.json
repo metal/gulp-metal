@@ -60,7 +60,7 @@
     "karma-safari-launcher": "^0.1.1",
     "karma-sauce-launcher": "^0.3.0",
     "merge": "^1.2.0",
-    "metal-karma-config": "github:mairatma/metal-karma-config",
+    "metal-karma-config": "^0.1.0",
     "open": "0.0.5",
     "run-sequence": "^1.1.0",
     "soyparser": "^0.2.2",
