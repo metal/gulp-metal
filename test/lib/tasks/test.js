@@ -113,6 +113,27 @@ describe('Test Tasks', function() {
 		});
 	});
 
+	it('should run unit tests with the generic karma config file', function(done) {
+		registerTestTasks();
+		sinon.stub(fs, 'existsSync', function(path) {
+			return path.indexOf('karma-coverage.conf.js') === -1;
+		});
+
+		gulp.start('test:coverage', function() {
+			assert.strictEqual(1, karmaStub.Server.callCount);
+
+			var config = karmaStub.Server.args[0][0];
+			assert.strictEqual(3, Object.keys(config).length);
+			assert.ok(config.configFile);
+			assert.notStrictEqual(-1, config.configFile.indexOf('karma.conf.js'));
+			assert.ok(config.singleRun);
+			assert.strictEqual(process.cwd(), config.basePath);
+
+			fs.existsSync.restore();
+			done();
+		});
+	});
+
 	it('should open coverage file when test:coverage:open is run', function(done) {
 		registerTestTasks();
 
