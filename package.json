@@ -19,7 +19,7 @@
     "lib/**/*.tmpl"
   ],
   "scripts": {
-    "lint": "jshint index.js lib/*.js lib/tasks/*.js test/lib/*.js test/lib/**/*.js",
+    "lint": "jshint index.js lib/*.js lib/**/*.js test/lib/*.js test/lib/**/*.js",
     "test": "mocha test/lib/*.js test/lib/tasks/*.js --slow 1000 --timeout 3000"
   },
   "keywords": [
@@ -32,7 +32,6 @@
     "babel-preset-metal": "^1.0.2",
     "bower-directory": "^1.0.0",
     "del": "^2.0.2",
-    "engine-lodash": "^0.8.2",
     "glob-expand": "^0.1.0",
     "gulp": "^3.8.11",
     "gulp-babel-deps": "^1.1.0",
