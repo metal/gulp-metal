@@ -5,7 +5,6 @@ var childProcess = require('child_process');
 var del = require('del');
 var fs = require('fs');
 var gulp = require('gulp');
-var path = require('path');
 var rewire = require('rewire');
 var sinon = require('sinon');
 var through = require('through2');
@@ -13,41 +12,35 @@ var through = require('through2');
 var registerTasks = rewire('../../../lib/tasks/index');
 
 describe('Index Tasks', function() {
-	before(function() {
-		this.initialCwd_ = process.cwd();
-		process.chdir(path.resolve(__dirname, '../../assets'));
-	});
-
 	beforeEach(function(done) {
-		del('build').then(function() {
-			fs.mkdirSync('build');
-			fs.writeFileSync('build/temp.js', 'var a = 2;');
+		del('test/assets/build').then(function() {
+			fs.mkdirSync('test/assets/build');
+			fs.writeFileSync('test/assets/build/temp.js', 'var a = 2;');
 			gulp.reset();
 			done();
 		});
 	});
 
-	after(function() {
-		process.chdir(this.initialCwd_);
-	});
-
 	describe('Clean', function() {
 		it('should clean the build directory', function(done) {
-			registerTasks();
+			registerTasks({
+				cleanDir: 'test/assets/build'
+			});
 
 			gulp.start('clean', function() {
-				assert.ok(!fs.existsSync('build/temp.js'));
+				assert.ok(!fs.existsSync('test/assets/build/temp.js'));
 				done();
 			});
 		});
 
 		it('should use task prefix when it\'s defined', function(done) {
 			registerTasks({
+				cleanDir: 'test/assets/build',
 				taskPrefix: 'myPrefix:'
 			});
 
 			gulp.start('myPrefix:clean', function() {
-				assert.ok(!fs.existsSync('build/temp.js'));
+				assert.ok(!fs.existsSync('test/assets/build/temp.js'));
 				done();
 			});
 		});
@@ -56,65 +49,83 @@ describe('Index Tasks', function() {
 	describe('Build', function() {
 		it('should clean the build directory', function(done) {
 			registerTasks({
-				buildSrc: 'src/Bar.js'
+				buildDest: 'test/assets/build/globals',
+				buildSrc: 'test/assets/src/Bar.js',
+				cleanDir: 'test/assets/build'
 			});
 
 			gulp.start('build', function() {
-				assert.ok(!fs.existsSync('build/temp.js'));
+				assert.ok(!fs.existsSync('test/assets/build/temp.js'));
 				done();
 			});
 		});
 
 		it('should build css files', function(done) {
 			registerTasks({
-				buildSrc: 'src/Bar.js'
+				cssDest: 'test/assets/build',
+				cssSrc: 'test/assets/src/*.css',
+				cleanDir: 'test/assets/build',
+				scssSrc: 'test/assets/src/*.scss'
 			});
 
 			gulp.start('build', function() {
-				assert.ok(fs.existsSync('build/all.css'));
+				assert.ok(fs.existsSync('test/assets/build/all.css'));
 				done();
 			});
 		});
 
 		it('should only build js files to globals by default', function(done) {
 			registerTasks({
-				buildSrc: 'src/Bar.js'
+				buildDest: 'test/assets/build/globals',
+				buildSrc: 'test/assets/src/Bar.js',
+				cleanDir: 'test/assets/build'
 			});
 
 			gulp.start('build', function() {
-				assert.ok(!fs.existsSync('build/amd'));
-				assert.ok(fs.existsSync('build/globals'));
-				assert.ok(!fs.existsSync('build/globals-jquery'));
-				assert.ok(!fs.existsSync('build/jquery'));
+				assert.ok(!fs.existsSync('test/assets/build/amd'));
+				assert.ok(fs.existsSync('test/assets/build/globals'));
+				assert.ok(!fs.existsSync('test/assets/build/globals-jquery'));
+				assert.ok(!fs.existsSync('test/assets/build/jquery'));
 				done();
 			});
 		});
 
 		it('should run the js build tasks specified by the "mainBuildJsTasks" option', function(done) {
 			registerTasks({
-				buildSrc: 'src/Bar.js',
+				buildAmdDest: 'test/assets/build/amd',
+				buildDest: 'test/assets/build/globals',
+				buildJqueryDest: 'test/assets/build/jquery',
+				buildGlobalsJqueryDest: 'test/assets/build/globals-jquery',
+				buildSrc: 'test/assets/src/Bar.js',
+				cleanDir: 'test/assets/build',
 				mainBuildJsTasks: ['build:amd', 'build:jquery']
 			});
 
 			gulp.start('build', function() {
-				assert.ok(fs.existsSync('build/amd'));
-				assert.ok(!fs.existsSync('build/globals'));
-				assert.ok(!fs.existsSync('build/globals-jquery'));
-				assert.ok(fs.existsSync('build/jquery'));
+				assert.ok(fs.existsSync('test/assets/build/amd'));
+				assert.ok(!fs.existsSync('test/assets/build/globals'));
+				assert.ok(!fs.existsSync('test/assets/build/globals-jquery'));
+				assert.ok(fs.existsSync('test/assets/build/jquery'));
 				done();
 			});
 		});
 
 		it('should use task prefix when it\'s defined', function(done) {
 			registerTasks({
-				buildSrc: 'src/Bar.js',
+				buildCss: 'test/assets/build',
+				buildDest: 'test/assets/build/globals',
+				buildSrc: 'test/assets/src/Bar.js',
+				cleanDir: 'test/assets/build',
+				cssDest: 'test/assets/build',
+				cssSrc: 'test/assets/src/**/*.css',
+				scssSrc: 'test/assets/src/**/*.scss',
 				taskPrefix: 'myPrefix:'
 			});
 
 			gulp.start('myPrefix:build', function() {
-				assert.ok(!fs.existsSync('build/temp.js'));
-				assert.ok(fs.existsSync('build/globals'));
-				assert.ok(fs.existsSync('build/all.css'));
+				assert.ok(!fs.existsSync('test/assets/build/temp.js'));
+				assert.ok(fs.existsSync('test/assets/build/globals'));
+				assert.ok(fs.existsSync('test/assets/build/all.css'));
 				done();
 			});
 		});
@@ -123,56 +134,73 @@ describe('Index Tasks', function() {
 	describe('Build JS', function() {
 		it('should not clean the build directory', function(done) {
 			registerTasks({
-				buildSrc: 'src/Bar.js'
+				buildDest: 'test/assets/build/globals',
+				buildSrc: 'test/assets/src/Bar.js',
+				cleanDir: 'test/assets/build'
 			});
 
 			gulp.start('build:js', function() {
-				assert.ok(fs.existsSync('build/temp.js'));
+				assert.ok(fs.existsSync('test/assets/build/temp.js'));
 				done();
 			});
 		});
 
 		it('should only build js files to globals by default', function(done) {
 			registerTasks({
-				buildSrc: 'src/Bar.js'
+				buildAmdDest: 'test/assets/build/amd',
+				buildDest: 'test/assets/build/globals',
+				buildJqueryDest: 'test/assets/build/jquery',
+				buildGlobalsJqueryDest: 'test/assets/build/globals-jquery',
+				buildSrc: 'test/assets/src/Bar.js',
+				cleanDir: 'test/assets/build'
 			});
 
 			gulp.start('build:js', function() {
-				assert.ok(!fs.existsSync('build/amd'));
-				assert.ok(fs.existsSync('build/globals'));
-				assert.ok(!fs.existsSync('build/globals-jquery'));
-				assert.ok(!fs.existsSync('build/jquery'));
+				assert.ok(!fs.existsSync('test/assets/build/amd'));
+				assert.ok(fs.existsSync('test/assets/build/globals'));
+				assert.ok(!fs.existsSync('test/assets/build/globals-jquery'));
+				assert.ok(!fs.existsSync('test/assets/build/jquery'));
 				done();
 			});
 		});
 
 		it('should run the js build tasks specified by the "mainBuildJsTasks" option', function(done) {
 			registerTasks({
-				buildSrc: 'src/Bar.js',
+				buildAmdDest: 'test/assets/build/amd',
+				buildDest: 'test/assets/build/globals',
+				buildJqueryDest: 'test/assets/build/jquery',
+				buildGlobalsJqueryDest: 'test/assets/build/globals-jquery',
+				buildSrc: 'test/assets/src/Bar.js',
+				cleanDir: 'test/assets/build',
 				mainBuildJsTasks: ['build:amd', 'build:jquery']
 			});
 
 			gulp.start('build:js', function() {
-				assert.ok(fs.existsSync('build/amd'));
-				assert.ok(!fs.existsSync('build/globals'));
-				assert.ok(!fs.existsSync('build/globals-jquery'));
-				assert.ok(fs.existsSync('build/jquery'));
+				assert.ok(fs.existsSync('test/assets/build/amd'));
+				assert.ok(!fs.existsSync('test/assets/build/globals'));
+				assert.ok(!fs.existsSync('test/assets/build/globals-jquery'));
+				assert.ok(fs.existsSync('test/assets/build/jquery'));
 				done();
 			});
 		});
 
 		it('should use task prefix when it\'s defined', function(done) {
 			registerTasks({
-				buildSrc: 'src/Bar.js',
+				buildAmdDest: 'test/assets/build/amd',
+				buildDest: 'test/assets/build/globals',
+				buildJqueryDest: 'test/assets/build/jquery',
+				buildGlobalsJqueryDest: 'test/assets/build/globals-jquery',
+				buildSrc: 'test/assets/src/Bar.js',
+				cleanDir: 'test/assets/build',
 				taskPrefix: 'myPrefix:'
 			});
 
 			gulp.start('myPrefix:build:js', function() {
-				assert.ok(fs.existsSync('build/temp.js'));
-				assert.ok(!fs.existsSync('build/amd'));
-				assert.ok(fs.existsSync('build/globals'));
-				assert.ok(!fs.existsSync('build/globals-jquery'));
-				assert.ok(!fs.existsSync('build/jquery'));
+				assert.ok(fs.existsSync('test/assets/build/temp.js'));
+				assert.ok(!fs.existsSync('test/assets/build/amd'));
+				assert.ok(fs.existsSync('test/assets/build/globals'));
+				assert.ok(!fs.existsSync('test/assets/build/globals-jquery'));
+				assert.ok(!fs.existsSync('test/assets/build/jquery'));
 				done();
 			});
 		});
@@ -181,54 +209,74 @@ describe('Index Tasks', function() {
 	describe('Build All', function() {
 		it('should clean the build directory', function(done) {
 			registerTasks({
-				buildSrc: 'src/Bar.js'
+				buildAmdDest: 'test/assets/build/amd',
+				buildDest: 'test/assets/build/globals',
+				buildJqueryDest: 'test/assets/build/jquery',
+				buildGlobalsJqueryDest: 'test/assets/build/globals-jquery',
+				buildSrc: 'test/assets/src/Bar.js',
+				cleanDir: 'test/assets/build'
 			});
 
 			gulp.start('build:all', function() {
-				assert.ok(!fs.existsSync('build/temp.js'));
+				assert.ok(!fs.existsSync('test/assets/build/temp.js'));
 				done();
 			});
 		});
 
 		it('should build css files', function(done) {
 			registerTasks({
-				buildSrc: 'src/Bar.js'
+				cssSrc: 'test/assets/src/*.css',
+				cssDest: 'test/assets/build',
+				scssSrc: 'test/assets/src/*.scss'
 			});
 
 			gulp.start('build:all', function() {
-				assert.ok(fs.existsSync('build/all.css'));
+				assert.ok(fs.existsSync('test/assets/build/all.css'));
 				done();
 			});
 		});
 
 		it('should build js files to all available build formats', function(done) {
 			registerTasks({
-				buildSrc: 'src/Bar.js',
+				buildAmdDest: 'test/assets/build/amd',
+				buildDest: 'test/assets/build/globals',
+				buildJqueryDest: 'test/assets/build/jquery',
+				buildGlobalsJqueryDest: 'test/assets/build/globals-jquery',
+				buildSrc: 'test/assets/src/Bar.js',
+				cleanDir: 'test/assets/build',
 				mainBuildJsTasks: ['build:amd', 'build:jquery']
 			});
 
 			gulp.start('build:all', function() {
-				assert.ok(fs.existsSync('build/amd'));
-				assert.ok(fs.existsSync('build/globals'));
-				assert.ok(fs.existsSync('build/globals-jquery'));
-				assert.ok(fs.existsSync('build/jquery'));
+				assert.ok(fs.existsSync('test/assets/build/amd'));
+				assert.ok(fs.existsSync('test/assets/build/globals'));
+				assert.ok(fs.existsSync('test/assets/build/globals-jquery'));
+				assert.ok(fs.existsSync('test/assets/build/jquery'));
 				done();
 			});
 		});
 
 		it('should use task prefix when it\'s defined', function(done) {
 			registerTasks({
-				buildSrc: 'src/Bar.js',
+				buildAmdDest: 'test/assets/build/amd',
+				buildDest: 'test/assets/build/globals',
+				buildJqueryDest: 'test/assets/build/jquery',
+				buildGlobalsJqueryDest: 'test/assets/build/globals-jquery',
+				buildSrc: 'test/assets/src/Bar.js',
+				cleanDir: 'test/assets/build',
+				cssSrc: 'test/assets/src/*.css',
+				cssDest: 'test/assets/build',
+				scssSrc: 'test/assets/src/*.scss',
 				taskPrefix: 'myPrefix:'
 			});
 
 			gulp.start('myPrefix:build:all', function() {
-				assert.ok(!fs.existsSync('build/temp.js'));
-				assert.ok(fs.existsSync('build/amd'));
-				assert.ok(fs.existsSync('build/globals'));
-				assert.ok(fs.existsSync('build/globals-jquery'));
-				assert.ok(fs.existsSync('build/jquery'));
-				assert.ok(fs.existsSync('build/all.css'));
+				assert.ok(!fs.existsSync('test/assets/build/temp.js'));
+				assert.ok(fs.existsSync('test/assets/build/amd'));
+				assert.ok(fs.existsSync('test/assets/build/globals'));
+				assert.ok(fs.existsSync('test/assets/build/globals-jquery'));
+				assert.ok(fs.existsSync('test/assets/build/jquery'));
+				assert.ok(fs.existsSync('test/assets/build/all.css'));
 				done();
 			});
 		});
@@ -237,42 +285,57 @@ describe('Index Tasks', function() {
 	describe('Build All JS', function() {
 		it('should not clean the build directory', function(done) {
 			registerTasks({
-				buildSrc: 'src/Bar.js'
+				buildAmdDest: 'test/assets/build/amd',
+				buildDest: 'test/assets/build/globals',
+				buildJqueryDest: 'test/assets/build/jquery',
+				buildGlobalsJqueryDest: 'test/assets/build/globals-jquery',
+				buildSrc: 'test/assets/src/Bar.js',
+				cleanDir: 'test/assets/build'
 			});
 
 			gulp.start('build:all:js', function() {
-				assert.ok(fs.existsSync('build/temp.js'));
+				assert.ok(fs.existsSync('test/assets/build/temp.js'));
 				done();
 			});
 		});
 
 		it('should build js files to all available build formats', function(done) {
 			registerTasks({
-				buildSrc: 'src/Bar.js',
+				buildAmdDest: 'test/assets/build/amd',
+				buildDest: 'test/assets/build/globals',
+				buildJqueryDest: 'test/assets/build/jquery',
+				buildGlobalsJqueryDest: 'test/assets/build/globals-jquery',
+				buildSrc: 'test/assets/src/Bar.js',
+				cleanDir: 'test/assets/build',
 				mainBuildJsTasks: ['build:amd', 'build:jquery']
 			});
 
 			gulp.start('build:all:js', function() {
-				assert.ok(fs.existsSync('build/amd'));
-				assert.ok(fs.existsSync('build/globals'));
-				assert.ok(fs.existsSync('build/globals-jquery'));
-				assert.ok(fs.existsSync('build/jquery'));
+				assert.ok(fs.existsSync('test/assets/build/amd'));
+				assert.ok(fs.existsSync('test/assets/build/globals'));
+				assert.ok(fs.existsSync('test/assets/build/globals-jquery'));
+				assert.ok(fs.existsSync('test/assets/build/jquery'));
 				done();
 			});
 		});
 
 		it('should use task prefix when it\'s defined', function(done) {
 			registerTasks({
-				buildSrc: 'src/Bar.js',
+				buildAmdDest: 'test/assets/build/amd',
+				buildDest: 'test/assets/build/globals',
+				buildJqueryDest: 'test/assets/build/jquery',
+				buildGlobalsJqueryDest: 'test/assets/build/globals-jquery',
+				buildSrc: 'test/assets/src/Bar.js',
+				cleanDir: 'test/assets/build',
 				taskPrefix: 'myPrefix:'
 			});
 
 			gulp.start('myPrefix:build:all:js', function() {
-				assert.ok(fs.existsSync('build/temp.js'));
-				assert.ok(fs.existsSync('build/amd'));
-				assert.ok(fs.existsSync('build/globals'));
-				assert.ok(fs.existsSync('build/globals-jquery'));
-				assert.ok(fs.existsSync('build/jquery'));
+				assert.ok(fs.existsSync('test/assets/build/temp.js'));
+				assert.ok(fs.existsSync('test/assets/build/amd'));
+				assert.ok(fs.existsSync('test/assets/build/globals'));
+				assert.ok(fs.existsSync('test/assets/build/globals-jquery'));
+				assert.ok(fs.existsSync('test/assets/build/jquery'));
 				done();
 			});
 		});

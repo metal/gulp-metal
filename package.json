@@ -19,7 +19,7 @@
     "lib/**/*.tmpl"
   ],
   "scripts": {
-    "lint": "jshint index.js lib/**/*.js test/lib/**/*.js",
+    "lint": "jshint index.js lib/*.js lib/**/*.js test/lib/**/*.js",
     "test": "mocha test/lib/**/*.js --slow 1000 --timeout 3000"
   },
   "keywords": [
@@ -27,28 +27,17 @@
     "metal"
   ],
   "dependencies": {
-    "babel-plugin-metal-register-components": "^1.0.0",
-    "babel-plugin-transform-es2015-modules-amd": "^6.0.15",
-    "babel-preset-metal": "^1.0.2",
-    "bower": "^1.7.1",
     "del": "^2.0.2",
     "glob-expand": "^0.1.0",
     "gulp": "^3.8.11",
-    "gulp-babel-deps": "^1.1.0",
-    "gulp-babel-globals": "^1.1.0",
     "gulp-concat": "^2.5.2",
     "gulp-esformatter": "^5.0.0",
     "gulp-if": "^2.0.0",
-    "gulp-ignore": "^2.0.1",
     "gulp-jshint": "^2.0.0",
-    "gulp-load-plugins": "^1.1.0",
     "gulp-rename": "^1.2.2",
-    "gulp-replace": "^0.5.4",
     "gulp-sass": "^2.0.1",
-    "gulp-sourcemaps": "^1.5.2",
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.6",
-    "gulp-wrapper": "^1.0.0",
     "jsdoc": "^3.4.0",
     "jshint": "^2.8.0",
     "jshint-stylish": "^2.0.0",
@@ -59,10 +48,12 @@
     "karma-sauce-launcher": "^0.3.0",
     "merge": "^1.2.0",
     "metal-karma-config": "^0.1.0",
-    "metal-tools-soy": "github:mairatma/metal-tools-soy",
+    "metal-tools-build-amd": "mairatma/metal-tools-build-amd",
+    "metal-tools-build-globals": "mairatma/metal-tools-build-globals",
+    "metal-tools-build-jquery": "mairatma/metal-tools-build-jquery",
+    "metal-tools-soy": "mairatma/metal-tools-soy",
     "open": "0.0.5",
     "run-sequence": "^1.1.0",
-    "soyparser": "^0.2.2",
     "stream-combiner": "^0.2.2",
     "through2": "^2.0.0"
   },

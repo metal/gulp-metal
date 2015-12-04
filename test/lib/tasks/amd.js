@@ -4,126 +4,37 @@ var assert = require('assert');
 var del = require('del');
 var fs = require('fs');
 var gulp = require('gulp');
-var path = require('path');
 var registerAmdTasks = require('../../../lib/tasks/amd');
 var registerSoyTasks = require('../../../lib/tasks/soy');
-var sinon = require('sinon');
 
 describe('AMD Build Task', function() {
-	before(function() {
-		this.initialCwd_ = process.cwd();
-		process.chdir(path.resolve(__dirname, '../../assets'));
-	});
-
 	beforeEach(function(done) {
 		gulp.reset();
 		registerSoyTasks();
-		del('build/amd').then(function() {
+		del('test/assets/build/amd').then(function() {
 			done();
 		});
-	});
-
-	after(function() {
-		process.chdir(this.initialCwd_);
 	});
 
 	it('should output source files and their dependencies as amd modules', function(done) {
 		registerAmdTasks({
+			buildSrc: ['test/assets/src/**.js'],
+			buildAmdDest: 'test/assets/build/amd',
 			moduleName: 'foo'
 		});
 
 		gulp.start('build:amd', function() {
-			assert.ok(fs.existsSync('build/amd/foo/src/Foo.js'));
-			assert.ok(fs.existsSync('build/amd/foo/src/Bar.js'));
-			assert.ok(fs.existsSync('build/amd/dep/src/core.js'));
-			done();
-		});
-	});
-
-	it('should output a source map file for each amd module', function(done) {
-		registerAmdTasks({
-			moduleName: 'foo'
-		});
-
-		gulp.start('build:amd', function() {
-			var contents = fs.readFileSync('build/amd/foo/src/Foo.js', 'utf8');
-			var url = contents.substr(contents.indexOf('//# sourceMappingURL=') + 21);
-			assert.strictEqual('Foo.js.map', url);
-			assert.ok(fs.existsSync('build/amd/foo/src/Foo.js.map'));
-
-			contents = fs.readFileSync('build/amd/foo/src/Bar.js', 'utf8');
-			url = contents.substr(contents.indexOf('//# sourceMappingURL=') + 21);
-			assert.strictEqual('Bar.js.map', url);
-			assert.ok(fs.existsSync('build/amd/foo/src/Bar.js.map'));
-
-			contents = fs.readFileSync('build/amd/dep/src/core.js', 'utf8');
-			url = contents.substr(contents.indexOf('//# sourceMappingURL=') + 21);
-			assert.strictEqual('core.js.map', url);
-			assert.ok(fs.existsSync('build/amd/dep/src/core.js.map'));
-			done();
-		});
-	});
-
-	it('should look for source files according to the value of the "buildSrc" option', function(done) {
-		registerAmdTasks({
-			buildSrc: 'src/Bar.js',
-			moduleName: 'foo'
-		});
-
-		gulp.start('build:amd', function() {
-			assert.ok(!fs.existsSync('build/amd/foo/src/Foo.js'));
-			assert.ok(fs.existsSync('build/amd/foo/src/Bar.js'));
-			assert.ok(!fs.existsSync('build/amd/dep/src/core.js'));
-			done();
-		});
-	});
-
-	it('should use given path as module id if it\'s prefixed with "module:"', function(done) {
-		registerAmdTasks({
-			buildSrc: 'amd/moduleAlias.js',
-			moduleName: 'moduleAlias'
-		});
-		sinon.stub(console, 'warn');
-
-		gulp.start('build:amd', function() {
-			var modulePath = 'build/amd/moduleAlias/amd/moduleAlias.js';
-			assert.ok(fs.existsSync(modulePath));
-
-			var contents = fs.readFileSync(modulePath, 'utf8');
-			assert.notStrictEqual(-1, contents.indexOf('define([\'myModuleId\']'));
-
-			console.warn.restore();
-			done();
-		});
-	});
-
-	it('should add component registration calls', function(done) {
-		registerAmdTasks({
-			moduleName: 'foo'
-		});
-
-		gulp.start('build:amd', function() {
-			var contents = fs.readFileSync('build/amd/foo/src/Foo.js', 'utf8');
-			assert.notStrictEqual(-1, contents.indexOf('Foo.prototype.registerMetalComponent'));
-			done();
-		});
-	});
-
-	it('should not add component registration calls if skipAutoComponentRegistration is set to true', function(done) {
-		registerAmdTasks({
-			moduleName: 'foo',
-			skipAutoComponentRegistration: true
-		});
-
-		gulp.start('build:amd', function() {
-			var contents = fs.readFileSync('build/amd/foo/src/Foo.js', 'utf8');
-			assert.strictEqual(-1, contents.indexOf('Foo.prototype.registerMetalComponent'));
+			assert.ok(fs.existsSync('test/assets/build/amd/foo/test/assets/src/Foo.js'));
+			assert.ok(fs.existsSync('test/assets/build/amd/foo/test/assets/src/Bar.js'));
+			assert.ok(fs.existsSync('test/assets/build/amd/dep/src/core.js'));
 			done();
 		});
 	});
 
 	it('should use task prefix when it\'s defined', function(done) {
 		var options = {
+			buildSrc: ['test/assets/src/**.js'],
+			buildAmdDest: 'test/assets/build/amd',
 			moduleName: 'foo',
 			taskPrefix: 'myPrefix:'
 		};
@@ -131,47 +42,33 @@ describe('AMD Build Task', function() {
 		registerSoyTasks(options);
 
 		gulp.start('myPrefix:build:amd', function() {
-			assert.ok(fs.existsSync('build/amd/foo/src/Foo.js'));
-			assert.ok(fs.existsSync('build/amd/foo/src/Bar.js'));
-			assert.ok(fs.existsSync('build/amd/dep/src/core.js'));
-			done();
-		});
-	});
-
-	it('should normalize module dependencies path', function(done) {
-		var options = {
-			moduleName: 'foo\\bar'
-		};
-		registerAmdTasks(options);
-		registerSoyTasks(options);
-
-		gulp.start('build:amd', function() {
-			assert.ok(fs.existsSync('build/amd/foo/bar/src/Foo.js'));
-
-			var contents = fs.readFileSync('build/amd/foo/bar/src/Foo.js', 'utf8');
-			assert.notStrictEqual(-1, contents.indexOf('\'foo/bar/src/Bar\''));
+			assert.ok(fs.existsSync('test/assets/build/amd/foo/test/assets/src/Foo.js'));
+			assert.ok(fs.existsSync('test/assets/build/amd/foo/test/assets/src/Bar.js'));
+			assert.ok(fs.existsSync('test/assets/build/amd/dep/src/core.js'));
 			done();
 		});
 	});
 
 	describe('jQuery', function() {
 		beforeEach(function(done) {
-			del('build/amd-jquery').then(function() {
+			del('test/assets/build/amd-jquery').then(function() {
 				done();
 			});
 		});
 
 		it('should output source files and their dependencies as amd modules with jquery', function(done) {
 			registerAmdTasks({
+				buildSrc: ['test/assets/src/**.js'],
+				buildAmdJqueryDest: 'test/assets/build/amd-jquery',
 				moduleName: 'foo'
 			});
 
 			gulp.start('build:amd:jquery', function() {
-				assert.ok(fs.existsSync('build/amd-jquery/foo/src/Foo.js'));
-				assert.ok(fs.existsSync('build/amd-jquery/foo/src/Bar.js'));
-				assert.ok(fs.existsSync('build/amd-jquery/dep/src/core.js'));
+				assert.ok(fs.existsSync('test/assets/build/amd-jquery/foo/test/assets/src/Foo.js'));
+				assert.ok(fs.existsSync('test/assets/build/amd-jquery/foo/test/assets/src/Bar.js'));
+				assert.ok(fs.existsSync('test/assets/build/amd-jquery/dep/src/core.js'));
 
-				var contents = fs.readFileSync('build/amd-jquery/foo/src/Foo.js', 'utf8');
+				var contents = fs.readFileSync('test/assets/build/amd-jquery/foo/test/assets/src/Foo.js', 'utf8');
 				assert.notStrictEqual(-1, contents.indexOf('_JQueryAdapter2.default.register(\'foo\', Foo)'));
 				done();
 			});
@@ -179,19 +76,23 @@ describe('AMD Build Task', function() {
 
 		it('should output a source map file for each amd module', function(done) {
 			registerAmdTasks({
+				buildSrc: ['test/assets/src/**.js'],
+				buildAmdJqueryDest: 'test/assets/build/amd-jquery',
 				moduleName: 'foo'
 			});
 
 			gulp.start('build:amd:jquery', function() {
-				assert.ok(fs.existsSync('build/amd-jquery/foo/src/Foo.js.map'));
-				assert.ok(fs.existsSync('build/amd-jquery/foo/src/Bar.js.map'));
-				assert.ok(fs.existsSync('build/amd-jquery/dep/src/core.js.map'));
+				assert.ok(fs.existsSync('test/assets/build/amd-jquery/foo/test/assets/src/Foo.js.map'));
+				assert.ok(fs.existsSync('test/assets/build/amd-jquery/foo/test/assets/src/Bar.js.map'));
+				assert.ok(fs.existsSync('test/assets/build/amd-jquery/dep/src/core.js.map'));
 				done();
 			});
 		});
 
 		it('should use task prefix when it\'s defined', function(done) {
 			var options = {
+				buildSrc: ['test/assets/src/**.js'],
+				buildAmdJqueryDest: 'test/assets/build/amd-jquery',
 				moduleName: 'foo',
 				taskPrefix: 'myPrefix:'
 			};
@@ -199,11 +100,11 @@ describe('AMD Build Task', function() {
 			registerSoyTasks(options);
 
 			gulp.start('myPrefix:build:amd:jquery', function() {
-				assert.ok(fs.existsSync('build/amd-jquery/foo/src/Foo.js'));
-				assert.ok(fs.existsSync('build/amd-jquery/foo/src/Bar.js'));
-				assert.ok(fs.existsSync('build/amd-jquery/dep/src/core.js'));
+				assert.ok(fs.existsSync('test/assets/build/amd-jquery/foo/test/assets/src/Foo.js'));
+				assert.ok(fs.existsSync('test/assets/build/amd-jquery/foo/test/assets/src/Bar.js'));
+				assert.ok(fs.existsSync('test/assets/build/amd-jquery/dep/src/core.js'));
 
-				var contents = fs.readFileSync('build/amd-jquery/foo/src/Foo.js', 'utf8');
+				var contents = fs.readFileSync('test/assets/build/amd-jquery/foo/test/assets/src/Foo.js', 'utf8');
 				assert.notStrictEqual(-1, contents.indexOf('_JQueryAdapter2.default.register(\'foo\', Foo)'));
 				done();
 			});
