@@ -1,6 +1,6 @@
 {
   "name": "gulp-metal",
-  "version": "0.7.4",
+  "version": "0.8.0",
   "description": "Gulp pipelines and tasks to be shared between Metal components",
   "license": "BSD",
   "repository": "metal/gulp-metal",
