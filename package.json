@@ -19,8 +19,8 @@
     "lib/**/*.tmpl"
   ],
   "scripts": {
-    "lint": "jshint index.js lib/*.js lib/**/*.js test/lib/*.js test/lib/**/*.js",
-    "test": "mocha test/lib/*.js test/lib/tasks/*.js --slow 1000 --timeout 3000"
+    "lint": "jshint index.js lib/**/*.js test/lib/**/*.js",
+    "test": "mocha test/lib/**/*.js --slow 1000 --timeout 3000"
   },
   "keywords": [
     "gulp",
@@ -30,7 +30,7 @@
     "babel-plugin-metal-register-components": "^1.0.0",
     "babel-plugin-transform-es2015-modules-amd": "^6.0.15",
     "babel-preset-metal": "^1.0.2",
-    "bower-directory": "^1.0.0",
+    "bower": "^1.7.1",
     "del": "^2.0.2",
     "glob-expand": "^0.1.0",
     "gulp": "^3.8.11",
