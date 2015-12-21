@@ -4,10 +4,12 @@ var assert = require('assert');
 var fs = require('fs');
 var gulp = require('gulp');
 var merge = require('merge');
+var mockery = require('mockery');
 var rewire = require('rewire');
 var sinon = require('sinon');
 
 var karmaStub = {};
+var karmaConfig = {};
 var openFile = sinon.stub();
 var registerTestTasks = rewire('../../../lib/tasks/test');
 
@@ -15,6 +17,17 @@ describe('Test Tasks', function() {
 	before(function() {
 		registerTestTasks.__set__('openFile', openFile);
 		registerTestTasks.__set__('karma', karmaStub);
+		registerTestTasks.__set__('karmaConfig', karmaConfig);
+
+		mockery.enable({
+			warnOnReplace: false,
+			warnOnUnregistered: false
+		});
+		mockery.registerMock(require.resolve('metal-karma-config'), function(config) {
+			config.set({
+				plugins: ['another']
+			});
+		});
 	});
 
 	beforeEach(function() {
@@ -30,7 +43,7 @@ describe('Test Tasks', function() {
 				}
 			};
 		};
-		karmaStub.Config = function() {
+		karmaConfig.Config = function() {
 			this.set = function(options) {
 				merge(this, options);
 			};
@@ -41,6 +54,10 @@ describe('Test Tasks', function() {
 
 	afterEach(function() {
 		karmaStub.Server.restore();
+	});
+
+	after(function() {
+		mockery.disable();
 	});
 
 	it('should run unit tests', function(done) {
