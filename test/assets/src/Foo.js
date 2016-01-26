@@ -1,11 +1,11 @@
 'use strict';
 
 import Bar from './Bar';
-import dep from 'bower:dep/src/core';
+import core from 'npm:metal/src/core';
 
 class Foo extends Bar {
 	hello() {
-		return 'Hello ' + dep;
+		return 'Hello ' + core.isString('foo');
 	}
 }
 

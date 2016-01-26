@@ -26,7 +26,7 @@ describe('AMD Build Task', function() {
 		gulp.start('build:amd', function() {
 			assert.ok(fs.existsSync('test/assets/build/amd/foo/test/assets/src/Foo.js'));
 			assert.ok(fs.existsSync('test/assets/build/amd/foo/test/assets/src/Bar.js'));
-			assert.ok(fs.existsSync('test/assets/build/amd/dep/src/core.js'));
+			assert.ok(fs.existsSync('test/assets/build/amd/metal/src/core.js'));
 			done();
 		});
 	});
@@ -44,7 +44,7 @@ describe('AMD Build Task', function() {
 		gulp.start('myPrefix:build:amd', function() {
 			assert.ok(fs.existsSync('test/assets/build/amd/foo/test/assets/src/Foo.js'));
 			assert.ok(fs.existsSync('test/assets/build/amd/foo/test/assets/src/Bar.js'));
-			assert.ok(fs.existsSync('test/assets/build/amd/dep/src/core.js'));
+			assert.ok(fs.existsSync('test/assets/build/amd/metal/src/core.js'));
 			done();
 		});
 	});
@@ -66,7 +66,7 @@ describe('AMD Build Task', function() {
 			gulp.start('build:amd:jquery', function() {
 				assert.ok(fs.existsSync('test/assets/build/amd-jquery/foo/test/assets/src/Foo.js'));
 				assert.ok(fs.existsSync('test/assets/build/amd-jquery/foo/test/assets/src/Bar.js'));
-				assert.ok(fs.existsSync('test/assets/build/amd-jquery/dep/src/core.js'));
+				assert.ok(fs.existsSync('test/assets/build/amd-jquery/metal/src/core.js'));
 
 				var contents = fs.readFileSync('test/assets/build/amd-jquery/foo/test/assets/src/Foo.js', 'utf8');
 				assert.notStrictEqual(-1, contents.indexOf('_JQueryAdapter2.default.register(\'foo\', Foo)'));
@@ -84,7 +84,7 @@ describe('AMD Build Task', function() {
 			gulp.start('build:amd:jquery', function() {
 				assert.ok(fs.existsSync('test/assets/build/amd-jquery/foo/test/assets/src/Foo.js.map'));
 				assert.ok(fs.existsSync('test/assets/build/amd-jquery/foo/test/assets/src/Bar.js.map'));
-				assert.ok(fs.existsSync('test/assets/build/amd-jquery/dep/src/core.js.map'));
+				assert.ok(fs.existsSync('test/assets/build/amd-jquery/metal/src/core.js.map'));
 				done();
 			});
 		});
@@ -102,7 +102,7 @@ describe('AMD Build Task', function() {
 			gulp.start('myPrefix:build:amd:jquery', function() {
 				assert.ok(fs.existsSync('test/assets/build/amd-jquery/foo/test/assets/src/Foo.js'));
 				assert.ok(fs.existsSync('test/assets/build/amd-jquery/foo/test/assets/src/Bar.js'));
-				assert.ok(fs.existsSync('test/assets/build/amd-jquery/dep/src/core.js'));
+				assert.ok(fs.existsSync('test/assets/build/amd-jquery/metal/src/core.js'));
 
 				var contents = fs.readFileSync('test/assets/build/amd-jquery/foo/test/assets/src/Foo.js', 'utf8');
 				assert.notStrictEqual(-1, contents.indexOf('_JQueryAdapter2.default.register(\'foo\', Foo)'));
