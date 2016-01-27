@@ -1,7 +1,7 @@
 'use strict';
 
 import Bar from './Bar';
-import core from 'npm:metal/src/core';
+import core from 'metal/src/core';
 
 class Foo extends Bar {
 	hello() {
