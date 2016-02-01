@@ -68,6 +68,7 @@
     "through2": "^2.0.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.4.5",
     "metal": "github:metal/metal.js#master",
     "mocha": "^2.2.5",
     "mockery": "^1.4.0",
