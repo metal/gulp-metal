@@ -7,9 +7,16 @@ var merge = require('merge');
 var mockery = require('mockery');
 var rewire = require('rewire');
 var sinon = require('sinon');
+var through = require('through2');
 
 var karmaStub = {};
 var karmaConfig = {};
+var mochaStub = sinon.spy(function() {
+	return through.obj(function(file, enconding, callback) {
+		this.push(file);
+		callback();
+	});
+});
 var openFile = sinon.stub();
 var registerTestTasks = rewire('../../../lib/tasks/test');
 
@@ -18,6 +25,7 @@ describe('Test Tasks', function() {
 		registerTestTasks.__set__('openFile', openFile);
 		registerTestTasks.__set__('karma', karmaStub);
 		registerTestTasks.__set__('karmaConfig', karmaConfig);
+		registerTestTasks.__set__('mocha', mochaStub);
 
 		mockery.enable({
 			warnOnReplace: false,
@@ -224,6 +232,15 @@ describe('Test Tasks', function() {
 			assert.deepEqual(['soy'], gulp.watch.args[0][1]);
 
 			gulp.watch.restore();
+			done();
+		});
+	});
+
+	it('should run node tests', function(done) {
+		registerTestTasks();
+
+		gulp.start('test:node', function() {
+			assert.strictEqual(1, mochaStub.callCount);
 			done();
 		});
 	});
