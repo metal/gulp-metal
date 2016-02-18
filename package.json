@@ -59,7 +59,7 @@
     "karma-source-map-support": "^1.1.0",
     "merge": "^1.2.0",
     "metal-karma-config": "^1.0.0",
-    "metal-tools-build-amd": "^1.0.0",
+    "metal-tools-build-amd": "^2.0.0",
     "metal-tools-build-globals": "^0.1.0",
     "metal-tools-build-jquery": "^0.1.0",
     "metal-tools-soy": "^1.0.0",
@@ -69,6 +69,7 @@
     "through2": "^2.0.0"
   },
   "devDependencies": {
+    "babel-deps": "^2.0.0",
     "metal": "github:metal/metal.js#master",
     "mocha": "^2.2.5",
     "mockery": "^1.4.0",

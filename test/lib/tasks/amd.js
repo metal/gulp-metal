@@ -1,6 +1,7 @@
 'use strict';
 
 var assert = require('assert');
+var babelDeps = require('babel-deps');
 var del = require('del');
 var fs = require('fs');
 var gulp = require('gulp');
@@ -9,6 +10,7 @@ var registerSoyTasks = require('../../../lib/tasks/soy');
 
 describe('AMD Build Task', function() {
 	beforeEach(function(done) {
+		babelDeps.clearCache();
 		gulp.reset();
 		registerSoyTasks();
 		del('test/assets/build/amd').then(function() {

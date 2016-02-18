@@ -1,6 +1,7 @@
 'use strict';
 
 var assert = require('assert');
+var babelDeps = require('babel-deps');
 var childProcess = require('child_process');
 var del = require('del');
 var fs = require('fs');
@@ -13,6 +14,7 @@ var registerTasks = rewire('../../../lib/tasks/index');
 
 describe('Index Tasks', function() {
 	beforeEach(function(done) {
+		babelDeps.clearCache();
 		del('test/assets/build').then(function() {
 			fs.mkdirSync('test/assets/build');
 			fs.writeFileSync('test/assets/build/temp.js', 'var a = 2;');
