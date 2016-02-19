@@ -21,15 +21,16 @@ As we've mentioned before, Metal.js is written in ES6. Since browsers don't yet 
 
 Another option is to previously build the ES6 files to ES5 equivalents. Again, there are lots of ways to do this, and lots of formats to build to. Metal.js provides a few tasks as build options that can be used out of the box.
 
-#### `gulp build:globals`
-Builds ES6 code to ES5, bundling all modules into a single file and publishing each to a global variable. The following options can be passed to the metal function for customizing this task:
-* `buildDest` The directory where the final bundle file should be placed. Default: **build**.
-* `bundleFileName` The name of the final bundle file. Default: **metal.js**.
-* `buildSrc` The glob expression that defines which files should be built. Default: **src/\*\*/\*.js**.
-* `globalName` The name of the global variable that should hold the exported values of the modules. Default: **metal**.
+#### `gulp build`
+Builds your project's files: css, soy and js (from ES6 code to ES5 for example). The following options can be passed to the metal function for customizing this task:
+* `buildDest` The directory where the built files should be placed. Default: **build**.
+* `bundleFileName` The name of the final bundle file. Only used for output formats that bundle all compiled code into a single file, like when building to globals. Default: **metal.js**.
+* `buildSrc` The glob expression that defines which js files should be built. Default: **src/\*\*/\*.js**.
+* `globalName` The name of the global variable that should hold the exported values of the modules. Only used if the globals output format is being used. Default: **metal**.
+* `mainBuildJsTasks` The tasks that should be run for building js. That's how you can choose the output format of the compiled js code. Default: **build:globals:js**.
 
-#### `gulp watch:globals`
-Watches for changes on the source files, rebuilding the code to the globals format automatically when that happens.
+#### `gulp watch`
+Watches for changes on the source files, rebuilding the code to the chosen format automatically when that happens.
 
 ### Test Tasks
 
@@ -39,6 +40,9 @@ Metal.js also provides gulp tasks to help with testing modules built with Metal.
 Runs all tests once.
 
 #### `gulp test:coverage`
+Runs all tests once and shows coverage information on the terminal.
+
+#### `gulp test:coverage:open`
 Runs all tests once and then opens the coverage html file on the default browser.
 
 #### `gulp test:browsers`
@@ -61,4 +65,3 @@ Generates some soy templates that are necessary for integration with the SoyComp
 * `soyDest` The directory where the compiled soy files should be placed. Default: **src**.
 * `soyGeneratedDest` The directory that should hold the generated soy files. Default **build**.
 * `soySrc` The glob expression that defines the location of the soy files. Default: **src/\*\*/\*.soy**.
-
