@@ -92,6 +92,20 @@ describe('Index Tasks', function() {
 			});
 		});
 
+		it('should output minified version of js files', function(done) {
+			registerTasks({
+				buildDest: 'test/assets/build/globals',
+				buildSrc: 'test/assets/src/Bar.js',
+				cleanDir: 'test/assets/build',
+				uglifySrc: 'test/assets/build/**/*.js',
+			});
+
+			gulp.start('build', function() {
+				assert.ok(fs.existsSync('test/assets/build/globals/metal-min.js'));
+				done();
+			});
+		});
+
 		it('should run the js build tasks specified by the "mainBuildJsTasks" option', function(done) {
 			registerTasks({
 				buildAmdDest: 'test/assets/build/amd',

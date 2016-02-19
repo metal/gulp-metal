@@ -27,7 +27,6 @@ describe('Global Build Tasks', function() {
 
 		gulp.start('build:globals', function() {
 			assert.ok(fs.existsSync('test/assets/build/globals/foo.js'));
-			assert.ok(fs.existsSync('test/assets/build/globals/foo-min.js'));
 			assert.ok(fs.existsSync('test/assets/build/globals/foo.js.map'));
 			done();
 		});
@@ -46,7 +45,6 @@ describe('Global Build Tasks', function() {
 
 		gulp.start('myPrefix:build:globals', function() {
 			assert.ok(fs.existsSync('test/assets/build/globals/foo.js'));
-			assert.ok(fs.existsSync('test/assets/build/globals/foo-min.js'));
 			assert.ok(fs.existsSync('test/assets/build/globals/foo.js.map'));
 			done();
 		});
@@ -112,7 +110,7 @@ describe('Global Build Tasks', function() {
 			});
 		});
 
-		it('should output minified version and source map of the jquery globals bundle', function(done) {
+		it('should output source map of the jquery globals bundle', function(done) {
 			registerGlobalTasks({
 				buildSrc: ['test/assets/src/**.js'],
 				buildGlobalsJqueryDest: 'test/assets/build/globals-jquery',
@@ -121,7 +119,6 @@ describe('Global Build Tasks', function() {
 			});
 
 			gulp.start('build:globals:jquery', function() {
-				assert.ok(fs.existsSync('test/assets/build/globals-jquery/foo-min.js'));
 				assert.ok(fs.existsSync('test/assets/build/globals-jquery/foo.js.map'));
 				done();
 			});

@@ -54,7 +54,7 @@ describe('jQuery Build Tasks', function() {
 		});
 	});
 
-	it('should output minified version and source map of the jquery bundle', function(done) {
+	it('should output source map of the jquery bundle', function(done) {
 		registerJQueryTasks({
 			buildSrc: 'test/assets/src/**.js',
 			buildJqueryDest: 'test/assets/build/jquery',
@@ -63,7 +63,6 @@ describe('jQuery Build Tasks', function() {
 		});
 
 		gulp.start('build:jquery', function() {
-			assert.ok(fs.existsSync('test/assets/build/jquery/foo-min.js'));
 			assert.ok(fs.existsSync('test/assets/build/jquery/foo.js.map'));
 			done();
 		});
