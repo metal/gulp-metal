@@ -40,6 +40,7 @@
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.6",
     "jsdoc": "^3.4.0",
+    "jshint": "^2.9.1",
     "jshint-stylish": "^2.0.0",
     "karma": "^0.13.9",
     "karma-firefox-launcher": "^0.1.7",
@@ -57,7 +58,6 @@
   },
   "devDependencies": {
     "babel-deps": "^2.0.0",
-    "jshint": "^2.9.1",
     "metal": "^1.0.0-rc",
     "mocha": "^2.2.5",
     "mockery": "^1.4.0",
