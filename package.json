@@ -49,9 +49,9 @@
     "karma-sauce-launcher": "^0.3.0",
     "merge": "^1.2.0",
     "metal-karma-config": "^2.0.0",
-    "metal-tools-build-amd": "^2.0.0",
-    "metal-tools-build-globals": "^1.0.0",
-    "metal-tools-build-jquery": "^1.0.0",
+    "metal-tools-build-amd": "^3.0.0",
+    "metal-tools-build-globals": "^2.0.0",
+    "metal-tools-build-jquery": "^2.0.0",
     "metal-tools-soy": "^2.0.0",
     "open": "0.0.5",
     "run-sequence": "^1.1.0"
