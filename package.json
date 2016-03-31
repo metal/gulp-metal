@@ -19,7 +19,7 @@
   ],
   "scripts": {
     "lint": "jshint index.js lib/*.js lib/**/*.js test/lib/**/*.js",
-    "test": "mocha test/lib/**/*.js --slow 1000 --timeout 3000"
+    "test": "mocha test/lib/**/*.js --slow 1000 --timeout 6000"
   },
   "keywords": [
     "gulp",
