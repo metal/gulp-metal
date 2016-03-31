@@ -1,68 +1,98 @@
 {
-  "name": "gulp-metal",
-  "version": "1.0.2",
-  "description": "Gulp pipelines and tasks to be shared between Metal components",
-  "license": "BSD",
-  "repository": "metal/gulp-metal",
-  "author": {
-    "name": "Maira Bello",
-    "email": "maira.araujo@liferay.com"
-  },
-  "engines": {
-    "node": ">=0.12.0"
-  },
-  "main": "index.js",
-  "files": [
-    "jsdoc.json",
-    "index.js",
-    "lib/**/*.js"
-  ],
-  "scripts": {
-    "lint": "jshint index.js lib/*.js lib/**/*.js test/lib/**/*.js",
-    "test": "mocha test/lib/**/*.js --slow 1000 --timeout 3000"
-  },
-  "keywords": [
-    "gulp",
-    "metal"
-  ],
-  "dependencies": {
-    "babel-preset-es2015": "^6.3.13",
-    "babel-register": "^6.4.3",
-    "del": "^2.0.2",
-    "glob-expand": "^0.1.0",
-    "gulp": "^3.8.11",
-    "gulp-concat": "^2.5.2",
-    "gulp-esformatter": "^5.0.0",
-    "gulp-jshint": "^2.0.0",
-    "gulp-mocha": "^2.2.0",
-    "gulp-rename": "^1.2.2",
-    "gulp-sass": "^2.0.1",
-    "gulp-uglify": "^1.2.0",
-    "gulp-util": "^3.0.6",
-    "jsdoc": "^3.4.0",
-    "jshint": "^2.9.1",
-    "jshint-stylish": "^2.0.0",
-    "karma": "^0.13.9",
-    "karma-firefox-launcher": "^0.1.7",
-    "karma-ievms": "^0.1.0",
-    "karma-safari-launcher": "^0.1.1",
-    "karma-sauce-launcher": "^0.3.0",
-    "merge": "^1.2.0",
-    "metal-karma-config": "^2.0.0",
-    "metal-tools-build-amd": "^3.0.0",
-    "metal-tools-build-globals": "^2.0.0",
-    "metal-tools-build-jquery": "^2.0.0",
-    "metal-tools-soy": "^2.0.0",
-    "open": "0.0.5",
-    "run-sequence": "^1.1.0"
-  },
-  "devDependencies": {
-    "babel-deps": "^2.0.0",
-    "metal": "^1.0.0-rc",
-    "mocha": "^2.2.5",
-    "mockery": "^1.4.0",
-    "rewire": "^2.3.4",
-    "sinon": "^1.14.1",
-    "through2": "^2.0.0"
-  }
+    "name": "gulp-metal",
+    "version": "1.0.2",
+    "description": "Gulp pipelines and tasks to be shared between Metal components",
+    "license": "BSD",
+    "repository": "metal/gulp-metal",
+    "author": {
+        "name": "Maira Bello",
+        "email": "maira.araujo@liferay.com"
+    },
+    "engines": {
+        "node": ">=0.12.0"
+    },
+    "main": "index.js",
+    "files": [
+        "jsdoc.json",
+        "index.js",
+        "lib/**/*.js"
+    ],
+    "scripts": {
+        "lint": "jshint index.js lib/*.js lib/**/*.js test/lib/**/*.js",
+        "test": "mocha test/lib/**/*.js --slow 1000 --timeout 3000"
+    },
+    "keywords": [
+        "gulp",
+        "metal"
+    ],
+    "dependencies": {
+        "babel-preset-es2015": "^6.3.13",
+        "babel-register": "^6.4.3",
+        "del": "^2.0.2",
+        "glob-expand": "^0.1.0",
+        "gulp": "^3.8.11",
+        "gulp-concat": "^2.5.2",
+        "gulp-esformatter": "^5.0.0",
+        "gulp-jshint": "^2.0.0",
+        "gulp-mocha": "^2.2.0",
+        "gulp-rename": "^1.2.2",
+        "gulp-sass": "^2.0.1",
+        "gulp-uglify": "^1.2.0",
+        "gulp-util": "^3.0.6",
+        "jsdoc": "^3.4.0",
+        "jshint": "^2.9.1",
+        "jshint-stylish": "^2.0.0",
+        "karma": "^0.13.9",
+        "karma-firefox-launcher": "^0.1.7",
+        "karma-ievms": "^0.1.0",
+        "karma-safari-launcher": "^0.1.1",
+        "karma-sauce-launcher": "^0.3.0",
+        "merge": "^1.2.0",
+        "metal-karma-config": "^2.0.0",
+        "metal-tools-build-amd": "^3.0.0",
+        "metal-tools-build-globals": "^2.0.0",
+        "metal-tools-build-jquery": "^2.0.0",
+        "metal-tools-soy": "^2.0.0",
+        "open": "0.0.5",
+        "run-sequence": "^1.1.0"
+    },
+    "devDependencies": {
+        "babel-deps": "^2.0.0",
+        "metal": "^1.0.0-rc",
+        "mocha": "^2.2.5",
+        "mockery": "^1.4.0",
+        "rewire": "^2.3.4",
+        "sinon": "^1.14.1",
+        "through2": "^2.0.0"
+    },
+    "bundledDependencies": [
+        "babel-preset-es2015",
+        "babel-register",
+        "del",
+        "glob-expand",
+        "gulp-concat",
+        "gulp-esformatter",
+        "gulp-jshint",
+        "gulp-mocha",
+        "gulp-rename",
+        "gulp-sass",
+        "gulp-uglify",
+        "gulp-util",
+        "jsdoc",
+        "jshint",
+        "jshint-stylish",
+        "karma",
+        "karma-firefox-launcher",
+        "karma-ievms",
+        "karma-safari-launcher",
+        "karma-sauce-launcher",
+        "merge",
+        "metal-karma-config",
+        "metal-tools-build-amd",
+        "metal-tools-build-globals",
+        "metal-tools-build-jquery",
+        "metal-tools-soy",
+        "open",
+        "run-sequence"
+    ]
 }
