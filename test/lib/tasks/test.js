@@ -23,7 +23,6 @@ var registerTestTasks = rewire('../../../lib/tasks/test');
 describe('Test Tasks', function() {
 	before(function() {
 		registerTestTasks.__set__('openFile', openFile);
-		registerTestTasks.__set__('karma', karmaStub);
 		registerTestTasks.__set__('karmaConfig', karmaConfig);
 		registerTestTasks.__set__('mocha', mochaStub);
 
@@ -69,7 +68,7 @@ describe('Test Tasks', function() {
 	});
 
 	it('should run unit tests', function(done) {
-		registerTestTasks();
+		registerTestTasks({karma: karmaStub});
 
 		gulp.start('test', function() {
 			assert.strictEqual(1, karmaStub.Server.callCount);
@@ -85,7 +84,7 @@ describe('Test Tasks', function() {
 	});
 
 	it('should run unit tests with karma.conf.js file', function(done) {
-		registerTestTasks();
+		registerTestTasks({karma: karmaStub});
 		sinon.stub(fs, 'existsSync').returns(true);
 
 		gulp.start('test', function() {
@@ -104,7 +103,7 @@ describe('Test Tasks', function() {
 	});
 
 	it('should run unit tests with the coverage karma config', function(done) {
-		registerTestTasks();
+		registerTestTasks({karma: karmaStub});
 
 		gulp.start('test:coverage', function() {
 			assert.strictEqual(1, karmaStub.Server.callCount);
@@ -120,7 +119,7 @@ describe('Test Tasks', function() {
 	});
 
 	it('should run unit tests with the coverage karma config file', function(done) {
-		registerTestTasks();
+		registerTestTasks({karma: karmaStub});
 		sinon.stub(fs, 'existsSync').returns(true);
 
 		gulp.start('test:coverage', function() {
@@ -139,7 +138,7 @@ describe('Test Tasks', function() {
 	});
 
 	it('should run unit tests with the generic karma config file', function(done) {
-		registerTestTasks();
+		registerTestTasks({karma: karmaStub});
 		sinon.stub(fs, 'existsSync', function(path) {
 			return path.indexOf('karma-coverage.conf.js') === -1;
 		});
@@ -160,7 +159,7 @@ describe('Test Tasks', function() {
 	});
 
 	it('should open coverage file when test:coverage:open is run', function(done) {
-		registerTestTasks();
+		registerTestTasks({karma: karmaStub});
 
 		assert.strictEqual(0, openFile.callCount);
 		gulp.start('test:coverage:open', function() {
@@ -179,7 +178,7 @@ describe('Test Tasks', function() {
 	});
 
 	it('should override browsers and plugins config when test:browsers is run', function(done) {
-		registerTestTasks();
+		registerTestTasks({karma: karmaStub});
 
 		gulp.start('test:browsers', function() {
 			assert.strictEqual(1, karmaStub.Server.callCount);
@@ -194,7 +193,7 @@ describe('Test Tasks', function() {
 	});
 
 	it('should pass saucelabs config to karma when test:saucelabs is run', function(done) {
-		registerTestTasks();
+		registerTestTasks({karma: karmaStub});
 
 		gulp.start('test:saucelabs', function() {
 			assert.strictEqual(1, karmaStub.Server.callCount);
@@ -210,7 +209,7 @@ describe('Test Tasks', function() {
 	});
 
 	it('should pass singleRun as false when test:watch is run', function(done) {
-		registerTestTasks();
+		registerTestTasks({karma: karmaStub});
 
 		gulp.start('test:watch', function() {
 			assert.strictEqual(1, karmaStub.Server.callCount);
@@ -223,7 +222,7 @@ describe('Test Tasks', function() {
 	});
 
 	it('should watch for soy file changes on test:watch', function(done) {
-		registerTestTasks();
+		registerTestTasks({karma: karmaStub});
 		sinon.stub(gulp, 'watch');
 
 		gulp.start('test:watch', function() {
@@ -237,7 +236,7 @@ describe('Test Tasks', function() {
 	});
 
 	it('should run node tests', function(done) {
-		registerTestTasks();
+		registerTestTasks({karma: karmaStub});
 
 		gulp.start('test:node', function() {
 			assert.strictEqual(1, mochaStub.callCount);
@@ -248,6 +247,7 @@ describe('Test Tasks', function() {
 	describe('Task Prefix', function() {
 		beforeEach(function() {
 			registerTestTasks({
+				karma: karmaStub,
 				taskPrefix: 'myPrefix:'
 			});
 
