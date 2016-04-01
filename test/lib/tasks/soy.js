@@ -40,13 +40,7 @@ describe('Soy Task', function() {
 		});
 	});
 
-	/**
-	 * This test case is being skipped for now because the current version of the
-	 * compiler from soy to js doesn't throw errors when something is invalid, it
-	 * just fails silently. This will be fixes on the compiler later though, and
-	 * then we can enable this test case again.
-	 */
-	it.skip('should trigger "end" event even when task throws error for invalid soy file', function(done) {
+	it('should trigger "end" event even when task throws error for invalid soy file', function(done) {
 		registerTasks({
 			soyDest: 'test/assets/soy',
 			soySrc: ['test/assets/soy/invalid.soy']
@@ -54,7 +48,7 @@ describe('Soy Task', function() {
 		sinon.stub(console, 'error');
 
 		gulp.start('soy', function() {
-			assert.strictEqual(2, console.error.callCount);
+			assert.strictEqual(1, console.error.callCount);
 			console.error.restore();
 			done();
 		});
