@@ -73,6 +73,21 @@ describe('CSS Task', function() {
 		});
 	});
 
+	it('should allow passing arrays as "cssSrc" and "scssSrc"', function(done) {
+		registerTasks({
+			cssSrc: ['css/anotherPath.css'],
+			scssSrc: ['css/anotherPath.scss']
+		});
+
+		gulp.start('css', function() {
+			var contents = fs.readFileSync('build/all.css', 'utf8');
+			assert.strictEqual(-1, contents.indexOf('.importer'));
+			assert.notStrictEqual(-1, contents.indexOf('.anotherPathCss'));
+			assert.notStrictEqual(-1, contents.indexOf('.anotherPathSass'));
+			done();
+		});
+	});
+
 	it('should trigger "end" event even when task throws error for invalid sass file', function(done) {
 		registerTasks({
 			scssSrc: 'css/invalid/invalid.scss'
