@@ -42,7 +42,7 @@
     "jsdoc": "^3.4.0",
     "jshint": "^2.9.1",
     "jshint-stylish": "^2.0.0",
-    "karma": "^0.13.9",
+    "karma": "^1.1.0",
     "karma-firefox-launcher": "^0.1.7",
     "karma-ievms": "^0.1.0",
     "karma-safari-launcher": "^0.1.1",
