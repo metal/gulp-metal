@@ -373,7 +373,7 @@ describe('Index Tasks', function() {
 			var task = gulp.start('watch', doneCallback);
 			assert.strictEqual(0, doneCallback.callCount);
 			assert.strictEqual(4, gulp.watch.callCount);
-			assert.deepEqual(['build:globals:js'], gulp.watch.args[0][1]);
+			assert.strictEqual('function', typeof gulp.watch.args[0][1]);
 			assert.deepEqual(['soy'], gulp.watch.args[1][1]);
 			assert.deepEqual(['css'], gulp.watch.args[2][1]);
 			assert.deepEqual(['css'], gulp.watch.args[3][1]);
@@ -390,7 +390,7 @@ describe('Index Tasks', function() {
 			var task = gulp.start('myPrefix:watch', doneCallback);
 			assert.strictEqual(0, doneCallback.callCount);
 			assert.strictEqual(4, gulp.watch.callCount);
-			assert.deepEqual(['myPrefix:build:globals:js'], gulp.watch.args[0][1]);
+			assert.strictEqual('function', typeof gulp.watch.args[0][1]);
 			assert.deepEqual(['myPrefix:soy'], gulp.watch.args[1][1]);
 			assert.deepEqual(['myPrefix:css'], gulp.watch.args[2][1]);
 			assert.deepEqual(['myPrefix:css'], gulp.watch.args[3][1]);
