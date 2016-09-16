@@ -7,6 +7,7 @@ var del = require('del');
 var fs = require('fs');
 var gulp = require('gulp');
 var rewire = require('rewire');
+var runSequence = require('run-sequence');
 var sinon = require('sinon');
 var through = require('through2');
 
@@ -516,6 +517,28 @@ describe('Index Tasks', function() {
 			});
 
 			assert.strictEqual(0, gulp.task.callCount);
+			assert.ok(localGulp.task.callCount > 0);
+		});
+	});
+
+	describe('Run Sequence', function() {
+		beforeEach(function() {
+			sinon.spy(runSequence, 'use');
+		});
+
+		afterEach(function() {
+			runSequence.use.restore();
+		});
+
+		it('should use given gulp instance', function() {
+			var localGulp = {
+				task: sinon.stub()
+			};
+			registerTasks({
+				gulp: localGulp
+			});
+
+			assert.ok(runSequence.use.alwaysCalledWithExactly(localGulp));
 			assert.ok(localGulp.task.callCount > 0);
 		});
 	});
