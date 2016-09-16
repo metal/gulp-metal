@@ -497,6 +497,28 @@ describe('Index Tasks', function() {
 			});
 		});
 	});
+
+	describe('Gulp Instance', function() {
+		beforeEach(function() {
+			sinon.spy(gulp, 'task');
+		});
+
+		afterEach(function() {
+			gulp.task.restore();
+		});
+
+		it('should register tasks in given gulp instance', function() {
+			var localGulp = {
+				task: sinon.stub()
+			};
+			registerTasks({
+				gulp: localGulp
+			});
+
+			assert.strictEqual(0, gulp.task.callCount);
+			assert.ok(localGulp.task.callCount > 0);
+		});
+	});
 });
 
 function getStreamFn() {
