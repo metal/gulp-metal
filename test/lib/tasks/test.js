@@ -60,6 +60,7 @@ describe('Test Tasks', function() {
 	});
 
 	afterEach(function() {
+		process.env.SAUCE_ACCESS_KEY_ENC = '';
 		karmaStub.Server.restore();
 	});
 
@@ -204,6 +205,26 @@ describe('Test Tasks', function() {
 			assert.ok(config.browsers);
 			assert.ok(config.plugins.length > 1);
 			assert.ok(config.sauceLabs);
+			assert.ok(!config.sauceLabs.accessKey);
+			done();
+		});
+	});
+
+	it('should decrypt access key in SAUCE_ACCESS_KEY_ENC when test:saucelabs is run', function(done) {
+		process.env.SAUCE_ACCESS_KEY_ENC = new Buffer('test', 'binary')
+			.toString('base64');
+		registerTestTasks({karma: karmaStub});
+
+		gulp.start('test:saucelabs', function() {
+			assert.strictEqual(1, karmaStub.Server.callCount);
+
+			var config = karmaStub.Server.args[0][0];
+			assert.ok(config.configFile);
+			assert.ok(config.singleRun);
+			assert.ok(config.browsers);
+			assert.ok(config.plugins.length > 1);
+			assert.ok(config.sauceLabs);
+			assert.strictEqual('test', config.sauceLabs.accessKey);
 			done();
 		});
 	});
