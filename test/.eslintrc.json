@@ -1,0 +1,13 @@
+{
+  "env": {
+    "mocha": true
+  },
+  "globals": {
+    "assert": true,
+    "soy": true,
+    "Templates": true
+  },
+  "rules": {
+    "no-eval": 2
+  }
+}
