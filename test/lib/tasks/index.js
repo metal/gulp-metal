@@ -469,6 +469,41 @@ describe('Index Tasks', function() {
 		});
 	});
 
+	describe('Lint:eslint', function() {
+		var stubs = {};
+
+		before(function() {
+			stubs.eslint = getStreamFn();
+			stubs.eslint.format = getStreamFn();
+			sinon.spy(stubs, 'eslint');
+			registerTasks.__set__('eslint', stubs.eslint);
+		});
+
+		beforeEach(function() {
+			stubs.eslint.callCount = 0;
+		});
+
+		it('should call eslint', function(done) {
+			registerTasks();
+
+			gulp.start('lint:eslint', function() {
+				assert.strictEqual(1, stubs.eslint.callCount);
+				done();
+			});
+		});
+
+		it('should use task prefix when it\'s defined', function(done) {
+			registerTasks({
+				taskPrefix: 'myPrefix:'
+			});
+
+			gulp.start('myPrefix:lint:eslint', function() {
+				assert.strictEqual(1, stubs.eslint.callCount);
+				done();
+			});
+		});
+	});
+
 	describe('Docs', function() {
 		beforeEach(function() {
 			sinon.stub(childProcess, 'execFile').yields();
