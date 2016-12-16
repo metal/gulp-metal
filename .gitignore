@@ -1,4 +1,5 @@
 build
 node_modules
 test/**/assets/**/*.soy.js
+test/**/assets/complexity/artifacts/**/*
 test/**/assets/soy/simple.js
