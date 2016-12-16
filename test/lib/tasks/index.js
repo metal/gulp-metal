@@ -469,7 +469,7 @@ describe('Index Tasks', function() {
 		});
 	});
 
-	describe('Lint:eslint', function() {
+	describe('Lint with "useEslint" option set to true', function() {
 		var stubs = {};
 
 		before(function() {
@@ -484,9 +484,11 @@ describe('Index Tasks', function() {
 		});
 
 		it('should call eslint', function(done) {
-			registerTasks();
+			registerTasks({
+				useEslint: true
+			});
 
-			gulp.start('lint:eslint', function() {
+			gulp.start('lint', function() {
 				assert.strictEqual(1, stubs.eslint.callCount);
 				done();
 			});
@@ -494,10 +496,11 @@ describe('Index Tasks', function() {
 
 		it('should use task prefix when it\'s defined', function(done) {
 			registerTasks({
-				taskPrefix: 'myPrefix:'
+				taskPrefix: 'myPrefix:',
+				useEslint: true
 			});
 
-			gulp.start('myPrefix:lint:eslint', function() {
+			gulp.start('myPrefix:lint', function() {
 				assert.strictEqual(1, stubs.eslint.callCount);
 				done();
 			});
