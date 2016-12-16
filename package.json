@@ -1,6 +1,6 @@
 {
   "name": "gulp-metal",
-  "version": "1.9.13",
+  "version": "1.9.14",
   "description": "Gulp pipelines and tasks to be shared between Metal components",
   "license": "BSD",
   "repository": "metal/gulp-metal",
@@ -75,7 +75,7 @@
     "glob-expand",
     "gulp-concat",
     "gulp-esformatter",
-	"gulp-eslint",
+    "gulp-eslint",
     "gulp-jshint",
     "gulp-mocha",
     "gulp-rename",
