@@ -58,7 +58,8 @@
     "metal-tools-build-jquery": "^2.0.0",
     "metal-tools-soy": "^3.0.0",
     "open": "0.0.5",
-    "run-sequence": "^1.1.0"
+    "run-sequence": "^1.1.0",
+    "typhonjs-escomplex": "0.0.12"
   },
   "devDependencies": {
     "babel-deps": "^2.0.0",
