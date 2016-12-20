@@ -6,10 +6,18 @@ var fs = require('fs');
 var gulp = require('gulp');
 var gutil = require('gulp-util');
 var path = require('path');
-var registerTasks = require('../../../lib/tasks/index');
+var rewire = require('rewire');
+var sinon = require('sinon');
+
+var complexityPipeline = rewire('../../../lib/pipelines/complexity');
+var registerComplexityTasks = rewire('../../../lib/tasks/complexity');
+var openFile = sinon.stub();
 
 describe('Complexity Task', function() {
 	before(function(done) {
+		complexityPipeline.__set__('openFile', openFile);
+		registerComplexityTasks.__set__('complexity', complexityPipeline);
+
 		this.initialCwd_ = process.cwd();
 		process.chdir(path.join(__dirname, '../../assets/complexity'));
 		del(['artifacts/**']).then(function() {
@@ -70,7 +78,7 @@ describe('Complexity Task', function() {
 	});
 
 	it('should generate report based on complexityGlobs', function(done) {
-		registerTasks({
+		registerComplexityTasks({
 			complexityGlobs: ['**/*.js'],
 			gulp: gulp
 		});
