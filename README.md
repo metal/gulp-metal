@@ -1,5 +1,7 @@
 # Metal Tasks
 
+[![Build Status](https://img.shields.io/travis/metal/gulp-metal/master.svg?style=flat)](https://travis-ci.org/metal/gulp-metal)
+
 Gulp pipelines and tasks to be shared between Metal components.
 
 ## Usage
