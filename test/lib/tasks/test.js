@@ -229,6 +229,17 @@ describe('Test Tasks', function() {
 		});
 	});
 
+	it('should not start a new connection to saucelabs when SAUCE_ACCESS_KEY is present when test:saucelabs is run', function(done) {
+		process.env.SAUCE_ACCESS_KEY = 'saucelabs access key from jwt connection';
+		registerTestTasks({karma: karmaStub});
+
+		gulp.start('test:saucelabs', function() {
+			var config = karmaStub.Server.args[0][0];
+			assert.strictEqual(false, config.sauceLabs.startConnect);
+			done();
+		});
+	});
+
 	it('should pass singleRun as false when test:watch is run', function(done) {
 		registerTestTasks({karma: karmaStub});
 
