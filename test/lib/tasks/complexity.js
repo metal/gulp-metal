@@ -17,6 +17,8 @@ describe('Complexity Task', function() {
 	before(function(done) {
 		complexityPipeline.__set__('openFile', openFile);
 		registerComplexityTasks.__set__('complexity', complexityPipeline);
+		sinon.stub(console, 'error');
+		sinon.stub(gutil, 'log');
 
 		this.initialCwd_ = process.cwd();
 		process.chdir(path.join(__dirname, '../../assets/complexity'));
@@ -30,6 +32,9 @@ describe('Complexity Task', function() {
 	});
 
 	after(function() {
+		console.error.restore();
+		gutil.log.restore();
+
 		process.chdir(this.initialCwd_);
 	});
 
@@ -44,8 +49,6 @@ describe('Complexity Task', function() {
 			gulp: gulp
 		});
 
-		sinon.stub(gutil, 'log');
-
 		gulp.start('complexity', function() {
 			var args = gutil.log.getCall(0).args;
 
@@ -57,8 +60,6 @@ describe('Complexity Task', function() {
 			var complexFnLog = gutil.colors.stripColor(args[0]);
 
 			assert(complexFnLog.indexOf('Bar.js:4 complexFn is too complicated') > -1);
-
-			gutil.log.restore();
 
 			done();
 		});
