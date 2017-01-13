@@ -272,6 +272,61 @@ describe('Test Tasks', function() {
 		});
 	});
 
+	it('should not let Saucelabs record screenshots by default', function(done) {
+		registerTestTasks({karma: karmaStub});
+
+		gulp.start('test:saucelabs', function() {
+			var config = karmaStub.Server.args[0][0];
+			assert.strictEqual(false, config.sauceLabs.recordScreenshots);
+			done();
+		});
+	});
+
+	it('should not let Saucelabs record video by defaul', function(done) {
+		registerTestTasks({karma: karmaStub});
+
+		gulp.start('test:saucelabs', function() {
+			var config = karmaStub.Server.args[0][0];
+			assert.strictEqual(false, config.sauceLabs.recordVideo);
+			done();
+		});
+	});
+
+	it('should not let Saucelabs start connection by default', function(done) {
+		registerTestTasks({karma: karmaStub});
+
+		gulp.start('test:saucelabs', function() {
+			var config = karmaStub.Server.args[0][0];
+			assert.strictEqual(false, config.sauceLabs.startConnect);
+			done();
+		});
+	});
+
+	it('should be able to overwrite saucelabs default options', function(done) {
+		registerTestTasks({
+			karma: karmaStub,
+			sauceLabs: {
+				recordScreenshots: true,
+				recordVideo: true,
+				startConnect: false,
+				testName: 'My custom teste name'
+			}
+		});
+
+		gulp.start('test:saucelabs', function() {
+			var config = karmaStub.Server.args[0][0];
+			assert.strictEqual(true, config.sauceLabs.recordScreenshots);
+			assert.strictEqual(true, config.sauceLabs.recordVideo);
+			assert.strictEqual(false, config.sauceLabs.startConnect);
+			assert.strictEqual('My custom teste name', config.sauceLabs.testName);
+
+			// Unchanged options remains the same
+			assert.strictEqual('sauce_connect.log', config.sauceLabs.connectOptions.logfile);
+			assert.strictEqual(5757, config.sauceLabs.connectOptions.port);
+			done();
+		});
+	});
+
 	it('should pass singleRun as false when test:watch is run', function(done) {
 		registerTestTasks({karma: karmaStub});
 
