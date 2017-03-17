@@ -47,7 +47,7 @@
     "jshint-stylish": "^2.0.0",
     "karma": "^1.1.0",
     "karma-firefox-launcher": "^0.1.7",
-    "karma-ievms": "^0.1.0",
+    "karma-ievms": "git+https://github.com/niksy/karma-ievms.git#browser-decorator",
     "karma-safari-launcher": "^0.1.1",
     "karma-sauce-launcher": "^0.3.0",
     "merge": "^1.2.0",
