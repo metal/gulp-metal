@@ -58,7 +58,7 @@
     "metal-tools-build-jquery": "^2.0.0",
     "metal-tools-soy": "^4.0.0",
     "open": "0.0.5",
-		"prettier": "^0.22.0",
+    "prettier": "^1.1.0",
     "run-sequence": "^1.1.0",
     "typhonjs-escomplex": "0.0.12"
   },
