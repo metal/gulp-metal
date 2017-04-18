@@ -404,31 +404,37 @@ describe('Index Tasks', function() {
 		var stubs = {};
 
 		before(function() {
-			stubs.esformatter = getStreamFn();
-			sinon.spy(stubs, 'esformatter');
-			registerTasks.__set__('esformatter', stubs.esformatter);
+			stubs.prettier = {
+				format: function(string) { return string; }
+			};
+
+			sinon.spy(stubs.prettier, 'format');
+			registerTasks.__set__('prettier.format', stubs.prettier.format);
 		});
 
 		beforeEach(function() {
-			stubs.esformatter.callCount = 0;
+			stubs.prettier.format.callCount = 0;
 		});
 
-		it('should call esformatter', function(done) {
-			registerTasks();
+		it('should call prettier.format', function(done) {
+			registerTasks({
+				formatGlobs: ['test/assets/src/Format.js']
+			});
 
 			gulp.start('format', function() {
-				assert.strictEqual(1, stubs.esformatter.callCount);
+				assert.strictEqual(1, stubs.prettier.format.callCount);
 				done();
 			});
 		});
 
 		it('should use task prefix when it\'s defined', function(done) {
 			registerTasks({
+				formatGlobs: ['test/assets/src/Format.js'],
 				taskPrefix: 'myPrefix:'
 			});
 
 			gulp.start('myPrefix:format', function() {
-				assert.strictEqual(1, stubs.esformatter.callCount);
+				assert.strictEqual(1, stubs.prettier.format.callCount);
 				done();
 			});
 		});
