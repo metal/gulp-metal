@@ -103,6 +103,38 @@ describe('Test Tasks', function() {
 		});
 	});
 
+	it('should emit error when karma exits with 1', function() {
+		karmaStub.Server = function(config, callback) {
+			return {
+				start: function() {
+					callback(1);
+				}
+			};
+		};
+		sinon.spy(karmaStub, 'Server');
+
+		registerTestTasks({karma: karmaStub});
+
+		var errMessage;
+
+		try {
+			gulp.start('test');
+		}
+		catch (err) {
+			errMessage = err.message;
+		}
+
+		assert.strictEqual(1, karmaStub.Server.callCount);
+
+		var config = karmaStub.Server.args[0][0];
+		assert.strictEqual(3, Object.keys(config).length);
+		assert.ok(config.configFile);
+		assert.notStrictEqual(-1, config.configFile.indexOf('metal-karma-config'));
+		assert.ok(config.singleRun);
+		assert.strictEqual(process.cwd(), config.basePath);
+		assert.strictEqual(errMessage, 'Karma has exited with 1');
+	});
+
 	it('should run unit tests with the coverage karma config', function(done) {
 		registerTestTasks({karma: karmaStub});
 
