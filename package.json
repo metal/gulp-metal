@@ -56,7 +56,7 @@
     "metal-tools-build-amd": "^3.0.0",
     "metal-tools-build-globals": "^2.0.0",
     "metal-tools-build-jquery": "^2.0.0",
-    "metal-tools-soy": "^3.0.0",
+    "metal-tools-soy": "^4.0.0",
     "open": "0.0.5",
     "run-sequence": "^1.1.0",
     "typhonjs-escomplex": "0.0.12"
