@@ -1,6 +1,6 @@
 {
   "name": "gulp-metal",
-  "version": "1.12.0",
+  "version": "2.0.0",
   "description": "Gulp pipelines and tasks to be shared between Metal components",
   "license": "BSD",
   "repository": "metal/gulp-metal",
@@ -56,7 +56,7 @@
     "metal-tools-build-amd": "^3.0.0",
     "metal-tools-build-globals": "^2.0.0",
     "metal-tools-build-jquery": "^2.0.0",
-    "metal-tools-soy": "^3.0.0",
+    "metal-tools-soy": "^4.0.0",
     "open": "0.0.5",
     "run-sequence": "^1.1.0",
     "typhonjs-escomplex": "0.0.12"
