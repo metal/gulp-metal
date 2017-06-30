@@ -63,6 +63,7 @@
   },
   "devDependencies": {
     "babel-deps": "^2.0.0",
+    "jest-cli": "^20.0.4",
     "metal": "^1.0.0-rc",
     "mocha": "^2.2.5",
     "mockery": "^1.4.0",
