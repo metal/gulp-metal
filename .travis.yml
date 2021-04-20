@@ -2,7 +2,7 @@ language: java
 jdk:
   - oraclejdk9
 env:
-  - NODE_VERSION=6.1.0
+  - NODE_VERSION=10.15.1
 install:
   - nvm install $NODE_VERSION
   - npm install -g npm@'>=3.0.0'
