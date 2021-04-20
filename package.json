@@ -69,36 +69,5 @@
     "rewire": "^2.3.4",
     "sinon": "^1.17.7",
     "through2": "^2.0.0"
-  },
-  "bundledDependencies": [
-    "babel-preset-es2015",
-    "babel-register",
-    "del",
-    "glob-expand",
-    "gulp-concat",
-    "gulp-eslint",
-    "gulp-jshint",
-    "gulp-mocha",
-    "gulp-rename",
-    "gulp-sass",
-    "gulp-uglify",
-    "gulp-util",
-    "eslint",
-    "jsdoc",
-    "jshint",
-    "jshint-stylish",
-    "karma",
-    "karma-firefox-launcher",
-    "karma-ievms",
-    "karma-safari-launcher",
-    "karma-sauce-launcher",
-    "merge",
-    "metal-karma-config",
-    "metal-tools-build-amd",
-    "metal-tools-build-globals",
-    "metal-tools-build-jquery",
-    "metal-tools-soy",
-    "open",
-    "run-sequence"
-  ]
+  }
 }
