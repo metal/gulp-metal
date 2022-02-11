@@ -45,7 +45,7 @@
     "jsdoc": "^3.4.0",
     "jshint": "^2.9.1",
     "jshint-stylish": "^2.0.0",
-    "karma": "^1.1.0",
+    "karma": "^6.3.14",
     "karma-firefox-launcher": "^0.1.7",
     "karma-ievms": "git+https://github.com/niksy/karma-ievms.git#browser-decorator",
     "karma-safari-launcher": "^0.1.1",
